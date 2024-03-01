@@ -8,5 +8,3 @@ class ExpenseForm(FlaskForm):
     amount = FloatField('Amount', validators=[DataRequired()])
     category = StringField('Category', validators=[DataRequired()])
     submit = SubmitField('Submit')
-
-
