@@ -12,4 +12,4 @@ migrate = Migrate(app, db)
 
 app.config['SECRET_KEY'] = 'you-will-never-guess'
 
-from app import routes, models, errors
+from app import routes, errors

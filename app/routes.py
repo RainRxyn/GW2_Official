@@ -1,7 +1,7 @@
 from flask import render_template, flash, redirect, request
 from app import app,db
 from app.forms import ExpenseForm
-from app.models import Expense
+from model.models import Expense
 
 
 
