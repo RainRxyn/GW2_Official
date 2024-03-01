@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+    <head>
+
+      {% if title %}
+      <title>{{ title }} - EXPENSE TRACKER</title>
+      {% else %}
+      <title>EXPENSE TRACKER</title>
+      {% endif %}
+    </head>
+    <body>
+        <div>
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('add_expense') }}">ADD expeneses</a>
+            <a href="{{ url_for('show_expenses') }}">Show Expenses</a>
+        </div>
+        <hr>
+        {% block content %}{% endblock %}
+    </body>
+</html>

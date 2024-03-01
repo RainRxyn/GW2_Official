@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Add Expense</h1>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+
+<form action="/add_expense" method="post">
+    <label for="category">Category</label><br>
+    <input type="text" id="category" name="category" required><br>
+    <label for="expense_name">Expense Name:</label><br>
+    <input type="text" id="expense_name" name="name" required><br>
+    <label for="expense_amount">Amount:</label><br>
+    <input type="text" id="expense_amount" name="amount" required><br>
+    <label for="expense_amount">Products:</label><br>
+    <input type="text" id="expense_product" name="product" required><br>
+    <input type="submit" value="Save">
+</form>
+
+{% endblock %}
