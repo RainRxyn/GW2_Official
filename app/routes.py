@@ -1,8 +1,10 @@
-from flask import render_template, flash, redirect, request
+from flask import render_template, flash, redirect, request, url_for
+from urllib.parse import urlsplit
 from app import app,db
-from app.forms import ExpenseForm
-from model.models import Expense
-
+from app.forms import ExpenseForm, LoginForm, RegisterForm
+from model.models import Expense, User
+from flask_login import login_user, logout_user, login_required, current_user
+import sqlalchemy as sa
 
 
 @app.route('/')
@@ -83,3 +85,65 @@ def edit_expenses(id):
             flash('Expense not found.', 'danger')
 
     return redirect('/show_expenses')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = db.session.scalar(sa.select(User).where(User.email == form.email.data))
+
+        if user is None or not user.check_password(form.password.data):
+            flash('Invalid email address or password')
+            return redirect(url_for('login'))
+
+        login_user(user, remember=form.remember_me.data)
+        next_page = request.args.get('next')
+
+        if not next_page or urlsplit(next_page).netloc != '':
+            next_page = url_for('index')
+
+        return redirect(next_page)
+
+    return render_template('login.html', title='Login', form=form)
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+
+    form = RegisterForm()
+
+    if form.validate_on_submit():
+
+        user = db.session.scalar(sa.select(User).where(User.email == form.email.data))
+
+        if form.password.data == form.password2.data:
+
+            if User is None:
+
+                user = User(email=form.email.data, username=form.username.data)
+                user.set_password(form.password.data)
+                db.session.add(user)
+                db.session.commit()
+                flash('You are a registered user. Please login')
+                return redirect(url_for('login'))
+
+            else:
+                flash('This email is already in use')
+
+        else:
+            flash('The passwords do not match')
+
+    return render_template('register.html', title='Register', form=form)
+
