@@ -2,6 +2,7 @@ from flask import render_template, flash, redirect, request
 from app import app,db
 from app.forms import ExpenseForm
 from model.models import Expense
+from datetime import datetime
 
 
 
@@ -21,12 +22,14 @@ def add_expense():
         product = form['product']
         amount = form['amount']
         category = form['category']
+        date = form.date.data if form.date.data else datetime.today().date()
 
         try:
             db.session.add(Expense(name=name,
                                    product=product,
                                    amount=amount,
-                                   category=category))
+                                   category=category),
+                                   date=date)
             db.session.commit()
             flash('Expense added successfully!', 'success')
         except:
