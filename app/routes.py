@@ -130,7 +130,7 @@ def register():
 
         if form.password.data == form.password2.data:
 
-            if User is None:
+            if user is None:
 
                 user = User(email=form.email.data, username=form.username.data)
                 user.set_password(form.password.data)
