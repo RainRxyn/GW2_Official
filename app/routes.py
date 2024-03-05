@@ -24,12 +24,14 @@ def add_expense():
         product = form_expense['product']
         amount = form_expense['amount']
         category = form_expense['category']
+        user_id = current_user
 
         try:
             db.session.add(Expense(name=name,
                                    product=product,
                                    amount=amount,
-                                   category=category))
+                                   category=category,
+                                   user_id= user_id))
             db.session.commit()
             flash('Expense added successfully!', 'success')
         except:
