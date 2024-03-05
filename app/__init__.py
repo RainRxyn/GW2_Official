@@ -16,4 +16,5 @@ login.login_view = 'login'
 
 app.config['SECRET_KEY'] = 'you-will-never-guess'
 
+
 from app import routes, errors
