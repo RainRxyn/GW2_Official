@@ -16,6 +16,7 @@ def index():
 
 
 @app.route('/add_expense', methods=['POST','GET'])
+@login_required
 def add_expense():
     form = request.form
     if request.method == 'POST':
@@ -38,14 +39,14 @@ def add_expense():
     return render_template('add_expenses.html')
 
 @app.route('/show_expenses' , methods=['GET','POST'])
+@login_required
 def show_expenses():
     expenses = db.session.query(Expense).all()
     return render_template('show_expenses.html', expenses=expenses)
 
 
-
-
 @app.route('/delete_expenses', methods=['POST'])
+@login_required
 def delete_expenses():
     if request.method == 'POST':
         id = request.form['id']
@@ -61,6 +62,7 @@ def delete_expenses():
 
 
 @app.route('/edit_expenses/<int:id>', methods=['POST'])
+@login_required
 def edit_expenses(id):
     if request.method == 'POST':
         expense = Expense.query.get(id)
@@ -112,6 +114,7 @@ def login():
 
 
 @app.route('/logout')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('index'))
@@ -130,7 +133,7 @@ def register():
 
         if form.password.data == form.password2.data:
 
-            if User is None:
+            if user is None:
 
                 user = User(email=form.email.data, username=form.username.data)
                 user.set_password(form.password.data)
