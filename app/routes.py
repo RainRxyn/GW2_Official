@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, request, url_for
 from urllib.parse import urlsplit
-from app import app,db
+from app import app, db
 from app.forms import ExpenseForm, LoginForm, RegisterForm
 from model.models import Expense, User
 from flask_login import login_user, logout_user, login_required, current_user
@@ -11,11 +11,10 @@ import sqlalchemy as sa
 @app.route('/index')
 def index():
     form = ExpenseForm()
-    return render_template('index.html',form=form)
+    return render_template('index.html', form=form)
 
 
-
-@app.route('/add_expense', methods=['POST','GET'])
+@app.route('/add_expense', methods=['POST', 'GET'])
 @login_required
 def add_expense():
     form = request.form
@@ -38,7 +37,8 @@ def add_expense():
         return redirect('/add_expense')
     return render_template('add_expenses.html')
 
-@app.route('/show_expenses' , methods=['GET','POST'])
+
+@app.route('/show_expenses', methods=['GET', 'POST'])
 @login_required
 def show_expenses():
     expenses = db.session.query(Expense).all()
@@ -149,4 +149,3 @@ def register():
             flash('The passwords do not match')
 
     return render_template('register.html', title='Register', form=form)
-
