@@ -1,11 +1,9 @@
-from datetime import datetime, timezone
 import sqlalchemy as sa
 import sqlalchemy.orm as so
 from app import db, login
-from typing import Optional, List
+from typing import Optional
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from sqlalchemy.orm import relationship
 
 # create expense model
 class Expense(db.Model):
@@ -58,3 +56,4 @@ class Income(db.Model):
     frequency: so.Mapped[int] = so.mapped_column(sa.String(20), nullable=False)
     user_id: so.Mapped[int] = so.mapped_column(db.Integer, db.ForeignKey('user.id'))
     user: so.Mapped["User"] = so.relationship("User", back_populates='incomes')
+

@@ -1,8 +1,7 @@
 from flask import render_template, flash, redirect, request, url_for
 from urllib.parse import urlsplit
 from app import app,db
-from datetime import datetime
-from app.forms import ExpenseForm, IncomeForm, LoginForm, RegisterForm
+from app.forms import ExpenseForm, LoginForm, RegisterForm
 from model.models import Expense, Income, User
 from flask_login import login_user, logout_user, login_required, current_user
 import sqlalchemy as sa
@@ -91,17 +90,20 @@ def edit_expenses(id):
 
 
 @app.route('/add_income', methods=["POST", "GET"])
+@login_required
 def add_income():
     if request.method == 'POST':
         form_income = request.form
         name = form_income['name']
         amount = form_income['amount']
         frequency = form_income['frequency']
+        user_id = current_user.id
 
         try:
             db.session.add(Income(name=name,
                                   amount=amount,
-                                  frequency=frequency))
+                                  frequency=frequency,
+                                  user_id= user_id))
             db.session.commit()
             flash("Income has succesfully been added")
 

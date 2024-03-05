@@ -14,6 +14,7 @@
             <a href="{{ url_for('index') }}">Home</a>
             <a href="{{ url_for('add_expense') }}">ADD expeneses</a>
             <a href="{{ url_for('show_expenses') }}">Show Expenses</a>
+            <a href="{{ url_for('add_income') }}">Add Income</a>
             {%  endif %}
             {%  if current_user.is_anonymous %}
             <a href="{{ url_for('login') }}">Login</a>
