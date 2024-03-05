@@ -1,7 +1,7 @@
 from flask import render_template, flash, redirect, request
 from app import app,db
-from app.forms import ExpenseForm
-from model.models import Expense
+from app.forms import ExpenseForm, IncomeForm
+from model.models import Expense, Income
 from datetime import datetime
 
 
@@ -9,27 +9,25 @@ from datetime import datetime
 @app.route('/')
 @app.route('/index')
 def index():
-    form = ExpenseForm()
-    return render_template('index.html',form=form)
+    form_expense = ExpenseForm()
+    return render_template('index.html',form=form_expense)
 
 
 
 @app.route('/add_expense', methods=['POST','GET'])
 def add_expense():
-    form = request.form
+    form_expense = request.form
     if request.method == 'POST':
-        name = form['name']
-        product = form['product']
-        amount = form['amount']
-        category = form['category']
-        date = form.date.data if form.date.data else datetime.today().date()
+        name = form_expense['name']
+        product = form_expense['product']
+        amount = form_expense['amount']
+        category = form_expense['category']
 
         try:
             db.session.add(Expense(name=name,
                                    product=product,
                                    amount=amount,
-                                   category=category),
-                                   date=date)
+                                   category=category))
             db.session.commit()
             flash('Expense added successfully!', 'success')
         except:
@@ -86,3 +84,25 @@ def edit_expenses(id):
             flash('Expense not found.', 'danger')
 
     return redirect('/show_expenses')
+
+
+@app.route('/add_income', methods=["POST", "GET"])
+def add_income():
+    if request.method == 'POST':
+        form_income = request.form
+        name = form_income['name']
+        amount = form_income['amount']
+        frequency = form_income['frequency']
+
+        try:
+            db.session.add(Income(name=name,
+                                  amount=amount,
+                                  frequency=frequency))
+            db.session.commit()
+            flash("Income has succesfully been added")
+
+        except Exception as e:
+            db.session.rollback()
+            flash(f"Failed to update income, {e}")
+        return redirect('/add_income')
+    return render_template('add_income.html')

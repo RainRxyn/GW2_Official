@@ -10,3 +10,9 @@ class ExpenseForm(FlaskForm):
     category = StringField('Category', validators=[DataRequired()])
     date = DateField('Date', format='%Y-%m-%d', default=datetime.today().date(), validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+class IncomeForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    amount = FloatField('Amount', validators=[DataRequired()])
+    frequency = FloatField('Frequency', choices=[('Daily', 'Weekly', 'Monthly', 'Yearly')])
+    submit = SubmitField('Submit')

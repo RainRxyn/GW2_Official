@@ -14,7 +14,6 @@ class Expense(db.Model):
     product: so.Mapped[str] = so.mapped_column(sa.String(80), nullable=False)
     amount: so.Mapped[float] = so.mapped_column(sa.Float(), nullable=False)
     category: so.Mapped[str] = so.mapped_column(sa.String(80), nullable=False, index=True)
-    date = so.mapped_column(sa.Date, default=datetime.now().date())
 
 
     def __init__(self, name, product, amount, category):
@@ -42,5 +41,6 @@ class Income(db.Model):
     id: so.Mapped[int] = so.mapped_column(sa.Integer, primary_key=True)
     name: so.Mapped[str] = so.mapped_column(sa.String(80), nullable=False, index=True)
     amount: so.Mapped[int] = so.mapped_column(sa.Float, nullable=False)
+    frequency: so.Mapped[int] = so.mapped_column(sa.String(20), nullable=False)
     user_id: so.Mapped[int] = so.mapped_column(db.Integer, db.ForeignKey('user.id'))
     user: so.Mapped["User"] = so.relationship("User", back_populates='incomes')
