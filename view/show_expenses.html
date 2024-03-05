@@ -14,7 +14,7 @@
                 <th>Product</th>
                 <th>Amount</th>
                 <th>Category</th>
-                <th>Action</th>
+                <th>Date</th>
             </tr>
         </thead>
 
@@ -26,12 +26,14 @@
                 <td>{{ expense.product }}</td>
                 <td>{{ expense.amount }}</td>
                 <td>{{ expense.category }}</td>
+                <td>{{ expense.date }}</td>
                 <td>
                         <form action="{{ url_for('edit_expenses', id=expense.id) }}" method="post">
                         <input type="text" id="name" name="name" placeholder="Edit name"><br>
                         <input type="text" id="product" name="product" placeholder="Edit product"><br>
                         <input type="" id="amount" name="amount" placeholder="Edit amount"><br>
                         <input type="text" id="category" name="category" placeholder="Edit category"><br><br>
+                        <input type="text" id="datepicker" name="datepicker" placeholder="Date"><br>
                         <input type="submit" value="Update">
                     </form>
 
@@ -39,6 +41,7 @@
                         <input type="hidden" name="id" value="{{ expense.id }}">
                         <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                     </form>
+
                 </td>
             </tr>
             {% endfor %}
@@ -58,6 +61,16 @@
         {% endwith %}
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $( function() {
+            $( "#datepicker" ).datepicker();
+        } );
+    </script>
+
+
 
 <a href="/add_expense" class="btn btn-primary"> + </a>
 

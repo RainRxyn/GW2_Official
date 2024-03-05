@@ -21,12 +21,16 @@ def add_expense():
         product = form['product']
         amount = form['amount']
         category = form['category']
+        date = form['date']
+
+
 
         try:
             db.session.add(Expense(name=name,
                                    product=product,
                                    amount=amount,
-                                   category=category))
+                                   category=category,
+                                   date=date))
             db.session.commit()
             flash('Expense added successfully!', 'success')
         except:
@@ -72,6 +76,8 @@ def edit_expenses(id):
                     expense.amount = request.form['amount']
                 if 'category' in request.form and request.form['category']:
                     expense.category = request.form['category']
+                if 'date' in request.form and request.form['date']:
+                    expense.date = request.form['date']
 
                 db.session.commit()
                 flash('Expense updated successfully!', 'success')
@@ -83,3 +89,7 @@ def edit_expenses(id):
             flash('Expense not found.', 'danger')
 
     return redirect('/show_expenses')
+
+
+
+

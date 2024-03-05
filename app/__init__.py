@@ -9,7 +9,6 @@ app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-
 app.config['SECRET_KEY'] = 'you-will-never-guess'
 
 from app import routes, errors
