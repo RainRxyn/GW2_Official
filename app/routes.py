@@ -1,9 +1,11 @@
-from flask import render_template, flash, redirect, request
+from flask import render_template, flash, redirect, request, url_for
+from urllib.parse import urlsplit
 from app import app,db
-from app.forms import ExpenseForm, IncomeForm
-from model.models import Expense, Income
 from datetime import datetime
-
+from app.forms import ExpenseForm, IncomeForm, LoginForm, RegisterForm
+from model.models import Expense, Income, User
+from flask_login import login_user, logout_user, login_required, current_user
+import sqlalchemy as sa
 
 
 @app.route('/')
@@ -15,6 +17,7 @@ def index():
 
 
 @app.route('/add_expense', methods=['POST','GET'])
+@login_required
 def add_expense():
     form_expense = request.form
     if request.method == 'POST':
@@ -37,14 +40,14 @@ def add_expense():
     return render_template('add_expenses.html')
 
 @app.route('/show_expenses' , methods=['GET','POST'])
+@login_required
 def show_expenses():
     expenses = db.session.query(Expense).all()
     return render_template('show_expenses.html', expenses=expenses)
 
 
-
-
 @app.route('/delete_expenses', methods=['POST'])
+@login_required
 def delete_expenses():
     if request.method == 'POST':
         id = request.form['id']
@@ -60,6 +63,7 @@ def delete_expenses():
 
 
 @app.route('/edit_expenses/<int:id>', methods=['POST'])
+@login_required
 def edit_expenses(id):
     if request.method == 'POST':
         expense = Expense.query.get(id)
@@ -106,3 +110,66 @@ def add_income():
             flash(f"Failed to update income, {e}")
         return redirect('/add_income')
     return render_template('add_income.html')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = db.session.scalar(sa.select(User).where(User.email == form.email.data))
+
+        if user is None or not user.check_password(form.password.data):
+            flash('Invalid email address or password')
+            return redirect(url_for('login'))
+
+        login_user(user, remember=form.remember_me.data)
+        next_page = request.args.get('next')
+
+        if not next_page or urlsplit(next_page).netloc != '':
+            next_page = url_for('index')
+
+        return redirect(next_page)
+
+    return render_template('login.html', title='Login', form=form)
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+
+    form = RegisterForm()
+
+    if form.validate_on_submit():
+
+        user = db.session.scalar(sa.select(User).where(User.email == form.email.data))
+
+        if form.password.data == form.password2.data:
+
+            if user is None:
+
+                user = User(email=form.email.data, username=form.username.data)
+                user.set_password(form.password.data)
+                db.session.add(user)
+                db.session.commit()
+                flash('You are a registered user. Please login')
+                return redirect(url_for('login'))
+
+            else:
+                flash('This email is already in use')
+
+        else:
+            flash('The passwords do not match')
+
+    return render_template('register.html', title='Register', form=form)
+
