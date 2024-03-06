@@ -6,14 +6,11 @@ from datetime import datetime
 from sqlalchemy import text
 
 
-
-
 @app.route('/')
 @app.route('/index')
 def index():
     form = ExpenseForm()
     return render_template('index.html',form=form)
-
 
 
 @app.route('/add_expense', methods=['POST','GET'])
@@ -43,13 +40,11 @@ def add_expense():
         return redirect('/add_expense')
     return render_template('add_expenses.html')
 
+
 @app.route('/show_expenses' , methods=['GET','POST'])
 def show_expenses():
     expenses = db.session.query(Expense).all()
     return render_template('show_expenses.html', expenses=expenses)
-
-
-
 
 
 @app.route('/delete_expenses', methods=['POST'])
