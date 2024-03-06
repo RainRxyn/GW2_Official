@@ -1,10 +1,12 @@
 from flask import render_template, flash, redirect, request, url_for
 from urllib.parse import urlsplit
-from app import app,db
+from app import app, db
 from app.forms import ExpenseForm, LoginForm, RegisterForm
 from model.models import Expense, Income, User
 from flask_login import login_user, logout_user, login_required, current_user
 import sqlalchemy as sa
+from sqlalchemy import text
+from datetime import datetime
 
 
 @app.route('/')
@@ -12,7 +14,6 @@ import sqlalchemy as sa
 def index():
     form_expense = ExpenseForm()
     return render_template('index.html',form=form_expense)
-
 
 
 @app.route('/add_expense', methods=['POST','GET'])
@@ -24,14 +25,19 @@ def add_expense():
         product = form_expense['product']
         amount = form_expense['amount']
         category = form_expense['category']
+        date = form_expense['date']
         user_id = current_user
 
         try:
+
+            date = datetime.strptime(date,'%Y-%m-%d')
             db.session.add(Expense(name=name,
                                    product=product,
                                    amount=amount,
                                    category=category,
-                                   user_id= user_id))
+                                   date=date,
+                                   user_id=user_id))
+
             db.session.commit()
             flash('Expense added successfully!', 'success')
         except:
@@ -39,6 +45,7 @@ def add_expense():
             flash('Failed to add expense. Please try again.', 'danger')
         return redirect('/add_expense')
     return render_template('add_expenses.html')
+
 
 @app.route('/show_expenses' , methods=['GET','POST'])
 @login_required
@@ -78,6 +85,9 @@ def edit_expenses(id):
                     expense.amount = request.form['amount']
                 if 'category' in request.form and request.form['category']:
                     expense.category = request.form['category']
+                if 'date' in request.form and request.form['date']:
+                    expense.date = datetime.strptime(request.form['date'], '%Y-%m-%d')
+
 
                 db.session.commit()
                 flash('Expense updated successfully!', 'success')
@@ -176,4 +186,23 @@ def register():
             flash('The passwords do not match')
 
     return render_template('register.html', title='Register', form=form)
+
+
+
+@app.route('/filter_expenses', methods=['GET', 'POST'])
+def filter_expenses():
+    expenses = db.session.execute(text('SELECT * FROM expenses'))
+    if request.method == 'GET':
+        if request.args.get('category') == 'asc':
+            expenses = db.session.execute(text('SELECT * FROM expenses ORDER BY category ASC'))
+        if request.args.get('category') == 'desc':
+            expenses = db.session.execute(text('SELECT * FROM expenses ORDER BY category DESC'))
+        if request.args.get('date') == 'date_asc':
+            expenses = db.session.execute(text('SELECT * FROM expenses ORDER BY date ASC'))
+        if request.args.get('date') == 'date_desc':
+            expenses = db.session.execute(text('SELECT * FROM expenses ORDER BY date DESC'))
+
+    return render_template('show_expenses.html', expenses=expenses)
+
+
 

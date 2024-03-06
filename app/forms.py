@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, FloatField, PasswordField, BooleanField, DateField
+from wtforms import StringField, SubmitField, FloatField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Email, EqualTo
 from datetime import datetime
 
@@ -8,8 +8,9 @@ class ExpenseForm(FlaskForm):
     product = StringField('Product', validators=[DataRequired()])
     amount = FloatField('Amount', validators=[DataRequired()])
     category = StringField('Category', validators=[DataRequired()])
-    date = DateField('Date', format='%Y-%m-%d', default=datetime.today().date(), validators=[DataRequired()])
+    date = StringField('Date', validators=[DataRequired()])
     submit = SubmitField('Submit')
+
 
 class IncomeForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])

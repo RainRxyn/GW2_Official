@@ -1,9 +1,11 @@
+from datetime import datetime,timezone
 import sqlalchemy as sa
 import sqlalchemy.orm as so
 from app import db, login
 from typing import Optional
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+
 
 # create expense model
 class Expense(db.Model):
@@ -15,19 +17,21 @@ class Expense(db.Model):
     amount : so.Mapped[float] = so.mapped_column(sa.Float(), nullable=False)
     category : so.Mapped[str] = so.mapped_column(sa.String(80), nullable=False,
                                                  index=True)
+    date = so.mapped_column(sa.Date(),nullable=False, index=True)
 
-    def __init__(self, name, product, amount, category):
+    def __init__(self, name, product, amount, category, date):
         self.name = name
         self.product = product
         self.amount = amount
         self.category = category
+        self.date = date
 
     def __repr__(self):
-        return f'<Expense name={self.name} product={self.product} amount={self.amount} category={self.category}>'
-
+        return f'<Expense name={self.name} product={self.product} amount={self.amount} category={self.category} date={self.date} >'
 
 
 class User(UserMixin, db.Model):
+    __tablename__ = "user"
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     username: so.Mapped[str] = so.mapped_column(sa.String(64), index=True)
     email: so.Mapped[str] = so.mapped_column(sa.String(120), index=True, unique=True)
