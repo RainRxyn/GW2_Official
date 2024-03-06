@@ -8,20 +8,12 @@ from typing import Optional
 class Expense(db.Model):
     __tablename__ = 'expenses'
     id : so.Mapped[int] = so.mapped_column(primary_key=True,nullable=False)
-    name : so.Mapped[str] = so.mapped_column(sa.String(80), nullable=False,
-                                             index=True)
+    name : so.Mapped[str] = so.mapped_column(sa.String(80), nullable=False,index=True)
     product : so.Mapped[str] = so.mapped_column(sa.String(80), nullable=False)
     amount : so.Mapped[float] = so.mapped_column(sa.Float(), nullable=False)
-    category : so.Mapped[str] = so.mapped_column(sa.String(80), nullable=False,
-                                                 index=True)
+    category : so.Mapped[str] = so.mapped_column(sa.String(80), nullable=False,index=True)
     date = so.mapped_column(sa.Date(),nullable=False, index=True)
 
-    def __init__(self, name, product, amount, category, date):
-        self.name = name
-        self.product = product
-        self.amount = amount
-        self.category = category
-        self.date = date
 
 
 
