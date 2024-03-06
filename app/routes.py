@@ -2,6 +2,9 @@ from flask import render_template, flash, redirect, request
 from app import app,db
 from app.forms import ExpenseForm
 from model.models import Expense
+from datetime import datetime
+from sqlalchemy import text
+
 
 
 
@@ -23,14 +26,15 @@ def add_expense():
         category = form['category']
         date = form['date']
 
-
-
         try:
+
+            date = datetime.strptime(date,'%Y-%m-%d')
             db.session.add(Expense(name=name,
                                    product=product,
                                    amount=amount,
                                    category=category,
-                                   date=date))
+                                   date = date))
+            print(date)
             db.session.commit()
             flash('Expense added successfully!', 'success')
         except:
@@ -43,6 +47,7 @@ def add_expense():
 def show_expenses():
     expenses = db.session.query(Expense).all()
     return render_template('show_expenses.html', expenses=expenses)
+
 
 
 
@@ -77,7 +82,8 @@ def edit_expenses(id):
                 if 'category' in request.form and request.form['category']:
                     expense.category = request.form['category']
                 if 'date' in request.form and request.form['date']:
-                    expense.date = request.form['date']
+                    expense.date = datetime.strptime(request.form['date'], '%Y-%m-%d')
+
 
                 db.session.commit()
                 flash('Expense updated successfully!', 'success')
@@ -90,6 +96,21 @@ def edit_expenses(id):
 
     return redirect('/show_expenses')
 
+
+@app.route('/filter_expenses', methods=['GET', 'POST'])
+def filter_expenses():
+    expenses = db.session.execute(text('SELECT * FROM expenses'))
+    if request.method == 'GET':
+        if request.args.get('category') == 'asc':
+            expenses = db.session.execute(text('SELECT * FROM expenses ORDER BY category ASC'))
+        if request.args.get('category') == 'desc':
+            expenses = db.session.execute(text('SELECT * FROM expenses ORDER BY category DESC'))
+        if request.args.get('date') == 'date_asc':
+            expenses = db.session.execute(text('SELECT * FROM expenses ORDER BY date ASC'))
+        if request.args.get('date') == 'date_desc':
+            expenses = db.session.execute(text('SELECT * FROM expenses ORDER BY date DESC'))
+
+    return render_template('show_expenses.html', expenses=expenses)
 
 
 

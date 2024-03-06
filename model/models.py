@@ -14,7 +14,7 @@ class Expense(db.Model):
     amount : so.Mapped[float] = so.mapped_column(sa.Float(), nullable=False)
     category : so.Mapped[str] = so.mapped_column(sa.String(80), nullable=False,
                                                  index=True)
-    date = so.mapped_column(sa.Date(), index=True)
+    date = so.mapped_column(sa.Date(),nullable=False, index=True)
 
     def __init__(self, name, product, amount, category, date):
         self.name = name
@@ -26,7 +26,7 @@ class Expense(db.Model):
 
 
     def __repr__(self):
-        return f'<Expense name={self.name} product={self.product} amount={self.amount} category={self.category} >'
+        return f'<Expense name={self.name} product={self.product} amount={self.amount} category={self.category} date={self.date} >'
 
 
 class User(db.Model):

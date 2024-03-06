@@ -23,15 +23,8 @@
     <input type="text" id="amount" name="amount" required><br>
     <label for="amount">Products:</label><br>
     <input type="text" id="product" name="product" required><br>
-    <input type="text" id="datepicker" name="datepicker" placeholder="Date" required><br>
-
+    <label for="date">Date:</label><br>
+    <input type="date" id="date" name="date" placeholder="Date" required><br>
     <input type="submit" value="Save">
 </form>
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script>
-        $( function() {
-            $( "#datepicker" ).datepicker();
-        } );
-    </script>
 {% endblock %}
