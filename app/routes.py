@@ -16,7 +16,7 @@ def index():
     return render_template('index.html',form=form_expense)
 
 
-@app.route('/add_expense', methods=['POST','GET'])
+@app.route('/add_expense', methods=['POST', 'GET'])
 @login_required
 def add_expense():
     form_expense = request.form
@@ -26,7 +26,7 @@ def add_expense():
         amount = form_expense['amount']
         category = form_expense['category']
         date = form_expense['date']
-        user_id = current_user
+        user_id = current_user.id
 
         try:
 
@@ -40,6 +40,7 @@ def add_expense():
 
             db.session.commit()
             flash('Expense added successfully!', 'success')
+
         except:
             db.session.rollback()
             flash('Failed to add expense. Please try again.', 'danger')
@@ -188,8 +189,8 @@ def register():
     return render_template('register.html', title='Register', form=form)
 
 
-
 @app.route('/filter_expenses', methods=['GET', 'POST'])
+@login_required
 def filter_expenses():
     expenses = db.session.execute(text('SELECT * FROM expenses'))
     if request.method == 'GET':
@@ -203,6 +204,3 @@ def filter_expenses():
             expenses = db.session.execute(text('SELECT * FROM expenses ORDER BY date DESC'))
 
     return render_template('show_expenses.html', expenses=expenses)
-
-
-
