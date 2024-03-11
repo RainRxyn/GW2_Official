@@ -188,6 +188,13 @@ def register():
 
     return render_template('register.html', title='Register', form=form)
 
+@app.route('/income', methods=['GET'])
+@login_required
+#aanmaak van /income route om de ingegeven inkomens weer te geven
+def income():
+    incomes = db.session.query(Income).all()
+    return render_template('income.html', incomes=incomes)
+
 
 @app.route('/filter_expenses', methods=['GET', 'POST'])
 @login_required

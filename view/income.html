@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <h1 class="mb-4">Your Incomes</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Amount</th>
+                <th>Frequency</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for income in incomes %}
+            <tr>
+                <td>{{ income.id }}</td>
+                <td>{{ income.name }}</td>
+                <td>{{ income.amount }}</td>
+                <td>{{ income.frequency }}</td>
+                <td>
+
+                </td>
+            </tr>
+            {% endfor %}
+    </table>
+<a href="/add_income" class="btn btn-primary"> + </a>
+
+{% endblock %}
+
+</div>
