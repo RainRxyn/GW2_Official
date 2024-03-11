@@ -15,6 +15,7 @@
             <a href="{{ url_for('add_expense') }}">Add Expeneses</a>
             <a href="{{ url_for('show_expenses') }}">My Expenses</a>
             <a href="{{ url_for('add_income') }}">Add Income</a>
+            <a href="{{ url_for('income') }}">My Incomes</a>
             {%  endif %}
             {%  if current_user.is_anonymous %}
             <a href="{{ url_for('login') }}">Login</a>
