@@ -1,23 +1,28 @@
-from app import app, db
 import unittest
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 
 
+unittest.TestLoader.sortTestMethodsUsing = None
+
+
+def fill_in_element_by_id(driver, element_id, text):
+
+    element = driver.find_element(By.ID, element_id)
+    element.clear()
+    element.send_keys(text)
+
+
 class LoginTest(unittest.TestCase):
 
     def setUp(self):
-        self.driver = webdriver.Firefox()
-        self.driver.get("http://127.0.0.1:5000")
 
-    def fill_in_element_by_id(self, driver, element_id, text):
-        element = driver.find_element(By.ID, element_id)
-        element.clear()
-        element.send_keys(text)
+        self.driver = webdriver.Firefox()
 
     def test_website_opens(self):
         driver = self.driver
+        driver.get("http://127.0.0.1:5000")
         self.assertIn("EXPENSE TRACKER", driver.title)
 
     def test_create_account(self):
@@ -28,14 +33,15 @@ class LoginTest(unittest.TestCase):
         driver = self.driver
         driver.get("http://127.0.0.1:5000/register")
 
-        self.fill_in_element_by_id(driver, 'username', username)
-        self.fill_in_element_by_id(driver, 'email', email)
-        self.fill_in_element_by_id(driver, 'password', password)
-        self.fill_in_element_by_id(driver, 'password2', password)
-        driver.find_element(By.CSS_SELECTOR, 'submit').click()
+        fill_in_element_by_id(driver, 'username', username)
+        fill_in_element_by_id(driver, 'email', email)
+        fill_in_element_by_id(driver, 'password', password)
+        fill_in_element_by_id(driver, 'password2', password)
+        driver.find_element(By.ID, 'submit').click()
 
-        title = driver.find_element(By.TAG_NAME, 'h1').text.strip()
-        self.assertEqual(title, "Sign In")
+        message = driver.find_element(By.CLASS_NAME, 'message').text.strip()
+        print(message)
+        self.assertEqual(message, "You are a registered user. Please login")
 
     def tearDown(self):
         self.driver.close()
