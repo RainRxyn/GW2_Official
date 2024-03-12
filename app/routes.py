@@ -51,7 +51,7 @@ def add_expense():
 @app.route('/show_expenses' , methods=['GET','POST'])
 @login_required
 def show_expenses():
-    expenses = db.session.query(Expense).all()
+    expenses = db.session.execute(text('SELECT * FROM expenses')).fetchall()
     return render_template('show_expenses.html', expenses=expenses)
 
 
@@ -192,15 +192,33 @@ def register():
 @app.route('/filter_expenses', methods=['GET', 'POST'])
 @login_required
 def filter_expenses():
-    expenses = db.session.execute(text('SELECT * FROM expenses'))
-    if request.method == 'GET':
-        if request.args.get('category') == 'asc':
-            expenses = db.session.execute(text('SELECT * FROM expenses ORDER BY category ASC'))
-        if request.args.get('category') == 'desc':
-            expenses = db.session.execute(text('SELECT * FROM expenses ORDER BY category DESC'))
-        if request.args.get('date') == 'date_asc':
-            expenses = db.session.execute(text('SELECT * FROM expenses ORDER BY date ASC'))
-        if request.args.get('date') == 'date_desc':
-            expenses = db.session.execute(text('SELECT * FROM expenses ORDER BY date DESC'))
+    if request.method == 'POST':
+        form = request.form
+        name = form.get('name', None)
+        if name:
+            expenses =  db.session.execute(text('SELECT * FROM expenses WHERE name LIKE :search_name'),{'search_name': f'{name}%'}).fetchall()
+            if expenses:
+                flash('Expense name found', 'success')
+            else:
+                expenses = db.session.execute(text('SELECT * FROM expenses')).fetchall()
+                flash('Expense name not found', 'danger')
+        else:
+            expenses = db.session.execute(text('SELECT * FROM expenses'))
+            flash('Please enter a name', 'danger')
+    if request.args.get('category') == 'asc':
+        expenses = db.session.execute(text('SELECT * FROM expenses ORDER BY category ASC'))
+    if request.args.get('category') == 'desc':
+        expenses = db.session.execute(text('SELECT * FROM expenses ORDER BY category DESC'))
+    if request.args.get('date') == 'date_asc':
+        expenses = db.session.execute(text('SELECT * FROM expenses ORDER BY date ASC'))
+    if request.args.get('date') == 'date_desc':
+        expenses = db.session.execute(text('SELECT * FROM expenses ORDER BY date DESC'))
 
     return render_template('show_expenses.html', expenses=expenses)
+
+
+
+
+
+
+
