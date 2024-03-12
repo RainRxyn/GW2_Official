@@ -3,6 +3,7 @@
 {% block content %}
 
 
+
 <div class="container">
     <h1 class="mb-4">Expense Tracker</h1>
     <table class="table">
@@ -15,7 +16,10 @@
                 <th>Date</th>
             </tr>
         </thead>
-
+         <form action="/filter_expenses?name" method="POST">
+                        <input type="text" id="name" name="name" placeholder="Search">
+                        <input type="submit" value="Search">
+                    </form>
         <tbody>
             {% for expense in expenses %}
             <tr>
@@ -41,31 +45,20 @@
                 </td>
             </tr>
             {% endfor %}
-
-                    <form action="/filter_expenses">
-                        <div class="container">
-                            <div class="dropdown">
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="/filter_expenses?category=asc">A-Z</a>
-                                    <a class="dropdown-item" href="/filter_expenses?category=desc">Z-A</a>
-                                    <a class="dropdown-item" href="/filter_expenses?date=date_asc">Old Expenses</a>
-                                    <a class="dropdown-item" href="/filter_expenses?date=date_desc">New Expenses</a>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-
-
-                        <form action="/filter_expenses?name" method="POST">
-                            <input type="text" id="name" name="name" placeholder="Search">
-                            <input type="submit" value="Search">
-                        </form>
-
-              </tbody>
-            </table>
-
-
-
+            <div class="float-end"> <!-- This div will float the dropdown to the right -->
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Sort
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/filter_expenses?category=asc">A-Z</a></li>
+                  <li><a class="dropdown-item" href="/filter_expenses?category=desc">Z-A</a></li>
+                  <li><a class="dropdown-item" href="/filter_expenses?date=date_asc">Old Expenses</a></li>
+                  <li><a class="dropdown-item" href="/filter_expenses?date=date_desc">New Expenses</a></li>
+              </ul>
+            </div>
+          </tbody>
+        </table>
 </div>
 <a href="/add_expense" class="btn btn-primary"> + </a>
 {% endblock %}
