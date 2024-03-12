@@ -4,3 +4,6 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'postgresql://postgres:rain1234@localhost:5432/app.db'
+
+
+#hey Xander en Ridha
