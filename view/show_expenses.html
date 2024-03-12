@@ -8,7 +8,6 @@
     <table class="table">
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Name</th>
                 <th>Product</th>
                 <th>Amount</th>
@@ -20,7 +19,6 @@
         <tbody>
             {% for expense in expenses %}
             <tr>
-                <td>{{ expense.id }}</td>
                 <td>{{ expense.name }}</td>
                 <td>{{ expense.product }}</td>
                 <td>{{ expense.amount }}</td>
@@ -44,21 +42,28 @@
             </tr>
             {% endfor %}
 
-                    <form method="POST" action="/filter_expenses">
+                    <form action="/filter_expenses">
                         <div class="container">
                             <div class="dropdown">
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item" href="/filter_expenses?category=asc">A-Z</a>
                                     <a class="dropdown-item" href="/filter_expenses?category=desc">Z-A</a>
-                                    <a class="dropdown-item" href="/filter_expenses?date=date_asc">Old</a>
-                                    <a class="dropdown-item" href="/filter_expenses?date=date_desc">New</a>
+                                    <a class="dropdown-item" href="/filter_expenses?date=date_asc">Old Expenses</a>
+                                    <a class="dropdown-item" href="/filter_expenses?date=date_desc">New Expenses</a>
                                 </div>
                             </div>
                         </div>
                     </form>
 
+
+                        <form action="/filter_expenses?name" method="POST">
+                            <input type="text" id="name" name="name" placeholder="Search">
+                            <input type="submit" value="Search">
+                        </form>
+
               </tbody>
             </table>
+
 
     <div class="flash-messages">
         {% with messages = get_flashed_messages() %}
@@ -75,5 +80,4 @@
     </div>
 </div>
 <a href="/add_expense" class="btn btn-primary"> + </a>
-
 {% endblock %}

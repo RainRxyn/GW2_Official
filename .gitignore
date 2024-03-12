@@ -167,3 +167,5 @@ app.db
 migrations
 migrations/
 
+.config.py
+config.py

@@ -55,11 +55,14 @@ def load_user(id):
     return db.session.get(User, int(id))
 
 
+#aanmaak van de income klasse in de database
 class Income(db.Model):
-    __tablename__='income'
+    __tablename__='incomes'
     id: so.Mapped[int] = so.mapped_column(sa.Integer, primary_key=True)
     name: so.Mapped[str] = so.mapped_column(sa.String(80), nullable=False, index=True)
     amount: so.Mapped[int] = so.mapped_column(sa.Float, nullable=False)
     frequency: so.Mapped[int] = so.mapped_column(sa.String(20), nullable=False)
     user_id: so.Mapped[int] = so.mapped_column(db.Integer, db.ForeignKey('user.id'))
     user: so.Mapped["User"] = so.relationship("User", back_populates='incomes')
+
+
