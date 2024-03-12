@@ -4,15 +4,6 @@
 
 <h1>Add Income</h1>
 
-{% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-{% endwith %}
 
 <form action="/add_income" method="post">
     <label for="name">Name</label><br>
