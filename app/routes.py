@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, request, url_for
+from flask import render_template, flash, redirect, request, url_for, send_from_directory
 from urllib.parse import urlsplit
 from app import app, db
 from app.forms import ExpenseForm, LoginForm, RegisterForm
@@ -7,6 +7,10 @@ from flask_login import login_user, logout_user, login_required, current_user
 import sqlalchemy as sa
 from sqlalchemy import text
 from datetime import datetime
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+from threading import Thread
+from app.database import get_plot
 
 
 @app.route('/')
@@ -226,6 +230,11 @@ def filter_expenses():
 
 
 
+@app.route('/resultaten')
+def resultaten():
+    get_plot()
 
+    # Render the plot in a template
+    return render_template('resultaten.html', plot_filename='plot.png')
 
 

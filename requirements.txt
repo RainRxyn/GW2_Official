@@ -6,3 +6,5 @@ Flask-SQLalchemy
 flask-wtf
 flask_migrate
 flask-login
+numpy
+matplotlib
