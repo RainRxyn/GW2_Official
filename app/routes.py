@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, request, url_for, send_from_directory
+from flask import render_template, flash, redirect, request, url_for, send_from_directory, render_template_string
 from urllib.parse import urlsplit
 from app import app, db
 from app.forms import ExpenseForm, LoginForm, RegisterForm
@@ -10,7 +10,7 @@ from datetime import datetime
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from threading import Thread
-from app.database import get_plot
+from app.database import get_figure
 
 
 @app.route('/')
@@ -232,9 +232,5 @@ def filter_expenses():
 
 @app.route('/resultaten')
 def resultaten():
-    get_plot()
-
-    # Render the plot in a template
-    return render_template('resultaten.html', plot_filename='plot.png')
-
-
+    fig = get_figure()  # Generate your Plotly figure here
+    return render_template('resultaten.html', fig=fig)
