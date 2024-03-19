@@ -13,7 +13,7 @@ from datetime import datetime
 @app.route('/index')
 def index():
     form_expense = ExpenseForm()
-    return render_template('index.html',form=form_expense)
+    return render_template('index.html', form=form_expense)
 
 
 @app.route('/add_expense', methods=['POST', 'GET'])
