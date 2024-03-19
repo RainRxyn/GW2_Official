@@ -2,6 +2,7 @@ import unittest
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+from tests.general_test_methods import clear_data
 
 
 unittest.TestLoader.sortTestMethodsUsing = None
@@ -26,6 +27,9 @@ class LoginTest(unittest.TestCase):
         self.assertIn("EXPENSE TRACKER", driver.title)
 
     def test_create_account(self):
+
+        clear_data()
+
         username = 'xandermoons'
         email = 'xander@test.be'
         password = '1234'

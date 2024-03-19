@@ -1,6 +1,5 @@
 from flask import render_template, flash, redirect, request, url_for
 from urllib.parse import urlsplit
-from model.models import Expense, User
 from app import app, db
 from app.forms import ExpenseForm, LoginForm, RegisterForm, IncomeForm
 from model.models import Expense, Income, User
@@ -15,7 +14,7 @@ from app.database import get_figure, get_figure_net_income
 @app.route('/index')
 def index():
     form_expense = ExpenseForm()
-    return render_template('index.html', form=form)
+    return render_template('index.html', form=form_expense)
 
 
 @app.route('/add_expense', methods=['POST', 'GET'])
