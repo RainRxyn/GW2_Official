@@ -10,7 +10,7 @@ from datetime import datetime
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from threading import Thread
-from app.database import get_figure
+from app.database import get_figure, get_figure_net_income
 
 
 @app.route('/')
@@ -232,5 +232,7 @@ def filter_expenses():
 
 @app.route('/resultaten')
 def resultaten():
-    fig = get_figure()  # Generate your Plotly figure here
-    return render_template('resultaten.html', fig=fig)
+    fig = get_figure()
+    fig2 = get_figure_net_income() # Generate your Plotly figure here
+
+    return render_template('resultaten.html', fig=fig, fig2=fig2)
