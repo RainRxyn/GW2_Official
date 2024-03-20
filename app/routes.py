@@ -1,4 +1,5 @@
 from flask import render_template, flash, redirect, request, url_for, send_from_directory, render_template_string
+from flask import render_template, flash, redirect, request, url_for,session
 from urllib.parse import urlsplit
 from app import app, db
 from app.forms import ExpenseForm, LoginForm, RegisterForm
@@ -55,7 +56,9 @@ def add_expense():
 @app.route('/show_expenses' , methods=['GET','POST'])
 @login_required
 def show_expenses():
-    expenses = db.session.execute(text('SELECT * FROM expenses')).fetchall()
+    page = request.args.get('page', 1, type=int)
+    per_page = 1
+    expenses = Expense.query.paginate(page=page, per_page=per_page, error_out=False)
     return render_template('show_expenses.html', expenses=expenses)
 
 
@@ -96,9 +99,9 @@ def edit_expenses(id):
 
                 db.session.commit()
                 flash('Expense updated successfully!', 'success')
-            except:
+            except (ValueError,KeyError,Exception) as e:
                 db.session.rollback()
-                flash('Failed to update expense. Please try again.', 'danger')
+                flash(f'Failed to update expense: {str(e)}', 'danger')
 
         else:
             flash('Expense not found.', 'danger')
@@ -236,3 +239,13 @@ def resultaten():
     fig2 = get_figure_net_income() # Generate your Plotly figure here
 
     return render_template('resultaten.html', fig=fig, fig2=fig2)
+
+@app.route('/avialable_months')
+def get_available_months():
+    if Expense.date is not None:
+        all_expenses = session.query(Expense.date).all()
+        months = set(expense.date.strftime("%B %Y") for expense in all_expenses)
+        return sorted(months)
+    else:
+        return f"No expenses found"
+    return render_template('show_expenses.html', expenses=expenses)

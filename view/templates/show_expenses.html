@@ -1,64 +1,121 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-
-
-<div class="container">
-    <h1 class="mb-4">My Expenses</h1>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Product</th>
-                <th>Amount</th>
-                <th>Category</th>
-                <th>Date</th>
-            </tr>
-        </thead>
-         <form action="/filter_expenses?name" method="POST">
-                        <input type="text" id="name" name="name" placeholder="Search">
-                        <input type="submit" value="Search">
-                    </form>
-        <tbody>
-            {% for expense in expenses %}
-            <tr>
-                <td>{{ expense.name }}</td>
-                <td>{{ expense.product }}</td>
-                <td>{{ expense.amount }}</td>
-                <td>{{ expense.category }}</td>
-                <td>{{ expense.date }}</td>
-                <td>
-                        <form action="{{ url_for('edit_expenses', id=expense.id) }}" method="post">
-                            <input type="text" id="name" name="name" placeholder="Edit name"><br>
-                        <input type="text" id="product" name="product" placeholder="Edit product"><br>
-                            <input type="" id="amount" name="amount" placeholder="Edit amount"><br>
-                        <input type="text" id="category" name="category" placeholder="Edit category"><br><br>
-                            <input type="date" id="date" name="date" placeholder="Date"><br>
-                        <input type="submit" value="Update">
-                    </form>
-
-                    <form action="/delete_expenses" method="post" class="d-inline">
-                            <input type="hidden" name="id" value="{{ expense.id }}">
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+<body>
+    <h1>My Expenses</h1>
+    <div class="search-bar">
+<li class="dropdown">
+    <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Sort
+    </a>
+    <ul class="dropdown-menu">
+        <li><a href="/filter_expenses?category=asc">A-Z</a></li>
+         <li><a href="/filter_expenses?category=desc">Z-A</a></li>
+          <li><a href="/filter_expenses?date=date_asc">Old Expenses</a></li>
+        <li><a href="/filter_expenses?date=date_desc">New Expenses</a></li>
+       </ul>
+    </div>
+    <div class="search-bar">
+        <form action="/filter_expenses?name" method="POST">
+            <input type="text" id="name" name="name" placeholder="Search">
+            <input type="submit" value="Search">
+        </form>
+    </div>
+    <table id="expenses">
+    <thead>
+        <tr>
+            <th>Name</th>
+             <th>Product</th>
+              <th>Amount</th>
+              <th>Category</th>
+             <th>Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for expense in expenses %}
+            <tr data-id="{{ expense.id }}">
+            <td class="name data">{{ expense.name }}</td>
+            <td class="product data">{{ expense.product }}</td>
+            <td class="amount data">{{ expense.amount }}</td>
+            <td class="category data">{{ expense.category }}</td>
+            <td class="date data">{{ expense.date }}</td>
+            <td>
+                <button class="edit">Edit</button>
+                <button class="save" style="display: none;">Save</button>
+                        <form action="/delete_expenses" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="{{ expense.id }}">
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                     </form>
                 </td>
-            </tr>
-            {% endfor %}
-            <div class="float-end"> <!-- This div will float the dropdown to the right -->
-            <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Sort
-              </button>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="/filter_expenses?category=asc">A-Z</a></li>
-                  <li><a class="dropdown-item" href="/filter_expenses?category=desc">Z-A</a></li>
-                  <li><a class="dropdown-item" href="/filter_expenses?date=date_asc">Old Expenses</a></li>
-                  <li><a class="dropdown-item" href="/filter_expenses?date=date_desc">New Expenses</a></li>
-              </ul>
-            </div>
-        </tbody>
-        </table>
-</div>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 <a href="/add_expense" class="btn btn-primary"> + </a>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $(document).on('click', '.edit', function() {
+            var row = $(this).closest('tr');
+            row.find('.data').each(function() {
+                var content = $(this).text();
+                $(this).html('<input value="' + content + '" />');
+            });
+            row.find('.save').show();
+            row.find('.edit').hide();
+        });
+
+        $(document).on('click', '.save', function() {
+            var row = $(this).closest('tr');
+            var id = row.attr('data-id');
+            var name = row.find('.name input').val();
+            var product = row.find('.product input').val();
+            var amount = row.find('.amount input').val();
+            var category = row.find('.category input').val();
+            var date = row.find('.date input').val();
+
+            $.ajax({
+                url: '/edit_expenses/' + id,
+                method: 'POST',
+                data: {
+                    name: name,
+                    product: product,
+                    amount: amount,
+                    category: category,
+                    date: date
+                },
+                success: function(response) {
+                    // Handle success, if needed
+                    console.log(response);
+                    location.reload(); // Reload the page
+                },
+                error: function(xhr, status, error) {
+                    // Handle error, if needed
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
+<div class="pagination-container">
+    {% if expenses.has_prev %}
+            <a href="{{ url_for('show_expenses', page=expenses.prev_num) }}">Previous</a>
+    {% else %}
+        <span>Previous</span>
+    {% endif %}
+        Page {{ expenses.page }} of {{ expenses.pages }}
+    {% if expenses.has_next %}
+        <a href="{{ url_for('show_expenses', page=expenses.next_num) }}">Next</a>
+    {% else %}
+        <span>Next</span>
+    {% endif %}
+</div>
+</body>
+</html>
+{% endblock %}
+
+{% block my %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/my_expenses.css') }}" >
 {% endblock %}

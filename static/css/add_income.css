@@ -1,0 +1,63 @@
+.income-form {
+    background: linear-gradient(to right, lavender, lavenderblush);
+    padding: 20px;
+    border-radius: 45px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.5s ease forwards;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+
+
+.form-group {
+    margin-bottom: 20px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.form-group:hover {
+    transform: translateY(-5px);
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+.form-group:hover label {
+    color: #007bff; /* Change label color on hover */
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="date"],
+.form-group input[type="submit"],
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add box shadow */
+}
+
+.form-group input[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.form-group input[type="submit"]:hover {
+    background-color: orange;
+    transform: translateY(-3px);
+}
+
+body {
+    background: linear-gradient(to right,white,lightcyan);
+}
+
