@@ -65,12 +65,12 @@ def get_figure_net_income():
     net_income = income - outflow
 
 
-    with app.app_context():
-        fig_net_income = go.Figure(data=[go.Bar(x=income_amount, y=net_income)])
-
-        # Convert Plotly graph to HTML
-        plotaa_html = fig_net_income.to_html(full_html=False)
-        return plotaa_html
+    # with app.app_context():
+    #     fig_net_income = go.Figure(data=[go.Bar(x=income_amount, y=net_income)])
+    #
+    #     # Convert Plotly graph to HTML
+    #     plotaa_html = fig_net_income.to_html(full_html=False)
+    #     return plotaa_html
 
 
 def get_figure_three():

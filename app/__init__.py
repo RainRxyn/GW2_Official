@@ -7,7 +7,7 @@ from flask_login import LoginManager
 
 app = Flask(__name__,
             template_folder="../view/templates",
-            static_folder="../view/static")
+            static_folder="../static")
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
