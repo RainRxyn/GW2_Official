@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, FloatField, PasswordField, BooleanField
-from wtforms.validators import DataRequired, Email, EqualTo
+from wtforms.validators import DataRequired, Email
 from datetime import datetime
 
 class ExpenseForm(FlaskForm):
@@ -15,6 +15,7 @@ class ExpenseForm(FlaskForm):
 class IncomeForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     amount = FloatField('Amount', validators=[DataRequired()])
+    date = StringField('Date', validators=[DataRequired()])
     frequency = FloatField('Frequency', choices=[('Daily', 'Weekly', 'Monthly', 'Yearly')])
     submit = SubmitField('Submit')
 

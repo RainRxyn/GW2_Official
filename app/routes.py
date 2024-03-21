@@ -117,12 +117,14 @@ def add_income():
         name = form_income['name']
         amount = form_income['amount']
         frequency = form_income['frequency']
+        date = form_income['date']
         user_id = current_user.id
 
         try:
             db.session.add(Income(name=name,
                                   amount=amount,
                                   frequency=frequency,
+                                  date=date,
                                   user_id= user_id))
             db.session.commit()
             flash("Income has succesfully been added")
@@ -236,7 +238,7 @@ def filter_expenses():
 @app.route('/resultaten')
 def resultaten():
     fig = get_figure()
-    fig2 = get_figure_net_income() # Generate your Plotly figure here
+    fig2 = get_figure_net_income()
 
     return render_template('resultaten.html', fig=fig, fig2=fig2)
 

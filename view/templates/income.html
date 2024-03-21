@@ -8,18 +8,18 @@
     <table class="table">
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Name</th>
                 <th>Amount</th>
+                <th>Date</th>
                 <th>Frequency</th>
             </tr>
         </thead>
         <tbody>
             {% for income in incomes %}
             <tr>
-                <td>{{ income.id }}</td>
                 <td>{{ income.name }}</td>
                 <td>{{ income.amount }}</td>
+                <td>{{ income.date }}</td>
                 <td>{{ income.frequency }}</td>
                 </td>
             </tr>
