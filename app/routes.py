@@ -57,8 +57,7 @@ def add_expense():
 @login_required
 def show_expenses():
     page = request.args.get('page', 1, type=int)
-    per_page = 1
-    expenses = Expense.query.paginate(page=page, per_page=per_page, error_out=False)
+    expenses = Expense.query.paginate(page=page, per_page=app.config['EXPENSES_PER_PAGE'], error_out=False)
     return render_template('show_expenses.html', expenses=expenses)
 
 
@@ -208,7 +207,7 @@ def income():
 def filter_expenses():
     if request.method == 'POST':
         form = request.form
-        name = form.get('name', None)
+        name = form.get('name')
         if name:
             expenses =  db.session.execute(text('SELECT * FROM expenses WHERE name LIKE :search_name'),{'search_name': f'{name}%'}).fetchall()
             if expenses:
@@ -227,6 +226,10 @@ def filter_expenses():
         expenses = db.session.execute(text('SELECT * FROM expenses ORDER BY date ASC'))
     if request.args.get('date') == 'date_desc':
         expenses = db.session.execute(text('SELECT * FROM expenses ORDER BY date DESC'))
+    if request.args.get('amount') == 'amount_asc':
+        expenses = db.session.execute(text('SELECT * FROM expenses ORDER BY amount ASC'))
+    if request.args.get('amount') == 'amount_desc':
+        expenses = db.session.execute(text('SELECT * FROM expenses ORDER BY amount DESC'))
 
     return render_template('show_expenses.html', expenses=expenses)
 

@@ -1,8 +1,43 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+<body>
     <h1>Expense Tracker</h1>
+    <div class="container">
+        <p class="animated-text"></p>
+    </div>
+    <a href="/add_expense" class="btn btn-primary"> Get Started </a>
+    <div class="additional-content">
+        <img src="https://source.unsplash.com/featured/?money" alt="Expense Tracker Image">
+        <div class="styled-text">
+            <h2>Track Your Expenses with Ease</h2>
+            <p>Stay organized and in control of your finances. Our expense tracker helps you monitor your spending habits, set budgets, and gain valuable insights into your financial behavior.</p>
+        </div>
+    </div>
 
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const textElement = document.querySelector('.animated-text');
+    const text = "This is a simple expenses tracker to help you manage your finances. You can track your expenses, set budgets, and analyze your spending habits. Get insights into your spending trends and make informed financial decisions."
 
+    function typeWriter(text, i) {
+        if (i < text.length) {
+            textElement.innerHTML += text.charAt(i);
+            setTimeout(() => {
+                typeWriter(text, i + 1);
+            }, 30);
+        }
+    }
+
+    setTimeout(() => {
+        typeWriter(text, 0);
+        textElement.style.opacity = 1;
+    }, 1000);
+});
+</script>
+</body>
+{% endblock %}
+
+{% block index %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}" >
 {% endblock %}

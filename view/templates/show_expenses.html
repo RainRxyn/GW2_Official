@@ -2,7 +2,7 @@
 
 {% block content %}
 <body>
-    <h1>My Expenses</h1>
+    <h1>Your Expenses</h1>
     <div class="search-bar">
 <li class="dropdown">
     <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -13,14 +13,17 @@
          <li><a href="/filter_expenses?category=desc">Z-A</a></li>
           <li><a href="/filter_expenses?date=date_asc">Old Expenses</a></li>
         <li><a href="/filter_expenses?date=date_desc">New Expenses</a></li>
+        <li><a href="/filter_expenses?amount=amount_asc">Low - High</a></li>
+        <li><a href="/filter_expenses?amount=amount_desc">High - Low</a></li>
        </ul>
     </div>
-    <div class="search-bar">
-        <form action="/filter_expenses?name" method="POST">
+        <div class="search-bar">
+        <form id="searchForm" action="/filter_expenses?name" method="POST">
             <input type="text" id="name" name="name" placeholder="Search">
             <input type="submit" value="Search">
         </form>
     </div>
+
     <table id="expenses">
     <thead>
         <tr>
@@ -37,7 +40,7 @@
             <tr data-id="{{ expense.id }}">
             <td class="name data">{{ expense.name }}</td>
             <td class="product data">{{ expense.product }}</td>
-            <td class="amount data">{{ expense.amount }}</td>
+            <td class="amount data">€{{ expense.amount }}</td>
             <td class="category data">{{ expense.category }}</td>
             <td class="date data">{{ expense.date }}</td>
             <td>
@@ -54,6 +57,7 @@
 </table>
 
 <a href="/add_expense" class="btn btn-primary"> + </a>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
@@ -61,7 +65,13 @@
             var row = $(this).closest('tr');
             row.find('.data').each(function() {
                 var content = $(this).text();
-                $(this).html('<input value="' + content + '" />');
+                if ($(this).hasClass('amount')) {
+                    $(this).html('<input type="number" min="0"  value="' + content + '" />');
+                } else if ($(this).hasClass('date')) {
+                    $(this).html('<input type="date" value="' + content + '" />');
+                } else {
+                    $(this).html('<input value="' + content + '" />');
+                }
             });
             row.find('.save').show();
             row.find('.edit').hide();
@@ -87,18 +97,17 @@
                     date: date
                 },
                 success: function(response) {
-                    // Handle success, if needed
                     console.log(response);
-                    location.reload(); // Reload the page
+                    location.reload();
                 },
                 error: function(xhr, status, error) {
-                    // Handle error, if needed
                     console.error(xhr.responseText);
                 }
             });
         });
     });
 </script>
+
 <div class="pagination-container">
     {% if expenses.has_prev %}
             <a href="{{ url_for('show_expenses', page=expenses.prev_num) }}">Previous</a>
@@ -112,6 +121,8 @@
         <span>Next</span>
     {% endif %}
 </div>
+
+
 </body>
 </html>
 {% endblock %}

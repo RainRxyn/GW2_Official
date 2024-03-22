@@ -1,24 +1,14 @@
-
-h1 {
-    background: linear-gradient(to right, #007bff, #0069d9);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-align: center;
-    font-weight: bold;
-    text-transform: uppercase;
-    animation: fadeIn 0.5s ease forwards;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
 .expense-form {
-    background: linear-gradient(to right,lavender,lavenderblush);
+    background: linear-gradient(to right, rgba(230, 230, 250, 0.7), rgba(255, 240, 245, 0.7));
     padding: 20px;
     border-radius: 45px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(10px);
     animation: fadeIn 0.5s ease forwards;
     max-width: 500px;
     margin: 0 auto;
 }
+
 
 .form-group {
     margin-bottom: 20px;
@@ -36,9 +26,7 @@ h1 {
     transition: color 0.3s ease-in-out;
 }
 
-.form-group:hover label {
-    color: #007bff; /* Change label color on hover */
-}
+
 
 .form-group input[type="text"],
 .form-group input[type="date"],
@@ -64,6 +52,17 @@ h1 {
     transform: translateY(-3px);
 }
 
+span.error {
+    color: red;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="date"]:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 10px #007bff;
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -77,4 +76,36 @@ h1 {
 
 body {
     background: linear-gradient(to right,white,lightcyan);
+}
+
+
+#amount {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#amount:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 10px #007bff;
+}
+
+.add-income-link {
+    display: block;
+    margin-top: 20px;
+    font-weight: bold;
+    text-align: center;
+    color: #007bff;
+    text-decoration: none;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.add-income-link:hover {
+    text-decoration: underline;
+    color: orange;
 }
