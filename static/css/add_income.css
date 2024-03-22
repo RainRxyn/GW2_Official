@@ -27,10 +27,6 @@
     transition: color 0.3s ease-in-out;
 }
 
-.form-group:hover label {
-    color: #007bff; /* Change label color on hover */
-}
-
 .form-group input[type="text"],
 .form-group input[type="number"],
 .form-group input[type="date"],
@@ -61,3 +57,24 @@ body {
     background: linear-gradient(to right,white,lightcyan);
 }
 
+.form-group input[type="text"]:focus,
+.form-group input[type="date"]:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 10px #007bff;
+}
+
+.add-income-link {
+    display: block;
+    margin-top: 20px;
+    font-weight: bold;
+    text-align: center;
+    font-size: 18px;
+    color: #007bff;
+    text-decoration: none;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.add-income-link:hover {
+    color: orange;
+}

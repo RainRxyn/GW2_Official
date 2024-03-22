@@ -1,12 +1,12 @@
 h1 {
-    background: linear-gradient(to right, #007bff, #0069d9);
+    background: black;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-align: center;
     font-weight: bold;
     text-transform: uppercase;
     animation: fadeIn 0.5s ease forwards;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    text-shadow: 2px 2px 4px rgba(100, 100, 100, 0.5);
 }
 
 
@@ -94,5 +94,5 @@ h1 {
 }
 
 body {
-    background: linear-gradient(to right,white,lightcyan);
+    background: whitesmoke;
 }
