@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, request, url_for, send_from_
 from flask import render_template, flash, redirect, request, url_for,session
 from urllib.parse import urlsplit
 from app import app, db
-from app.forms import ExpenseForm, LoginForm, RegisterForm
+from app.forms import ExpenseForm, LoginForm, RegisterForm, IncomeForm
 from model.models import Expense, Income, User
 from flask_login import login_user, logout_user, login_required, current_user
 import sqlalchemy as sa
@@ -109,32 +109,27 @@ def edit_expenses(id):
     return redirect('/show_expenses')
 
 
-@app.route('/add_income', methods=["POST", "GET"])
+@app.route('/add_income', methods=["GET", "POST"])
 @login_required
 def add_income():
-    if request.method == 'POST':
-        form_income = request.form
-        name = form_income['name']
-        amount = form_income['amount']
-        frequency = form_income['frequency']
-        date = form_income['date']
+    form = IncomeForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        amount = form.amount.data
+        date = form.date.data
+        frequency = form.frequency.data
         user_id = current_user.id
 
         try:
-            db.session.add(Income(name=name,
-                                  amount=amount,
-                                  frequency=frequency,
-                                  date=date,
-                                  user_id= user_id))
+            db.session.add(Income(name=name, amount=amount, date=date, frequency=frequency, user_id=user_id))
             db.session.commit()
-            flash("Income has succesfully been added")
-
+            flash("Income has been successfully added", 'succes')
+            return redirect(url_for('income'))
         except Exception as e:
             db.session.rollback()
-            flash(f"Failed to update income, {e}")
-        return redirect('/add_income')
-    return render_template('add_income.html')
-
+            flash(f"Failed to update income: {e}", 'danger')
+            return redirect(url_for('income'))
+    return render_template('add_income.html', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

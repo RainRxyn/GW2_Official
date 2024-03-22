@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, FloatField, PasswordField, BooleanField
-from wtforms.validators import DataRequired, Email
+from wtforms import (StringField, SubmitField, FloatField,
+                     PasswordField, BooleanField, SelectField)
+from wtforms.validators import DataRequired, Email, NumberRange
 from datetime import datetime
 
 class ExpenseForm(FlaskForm):
@@ -12,11 +13,12 @@ class ExpenseForm(FlaskForm):
     submit = SubmitField('Submit')
 
 
+
 class IncomeForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired()])
-    amount = FloatField('Amount', validators=[DataRequired()])
-    date = StringField('Date', validators=[DataRequired()])
-    frequency = FloatField('Frequency', choices=[('Daily', 'Weekly', 'Monthly', 'Yearly')])
+    name = StringField('Name', [DataRequired()])
+    amount = FloatField('Amount', [DataRequired(), NumberRange(min=0, max=None, message="Amount must be a non-negative number.")])
+    date = StringField('Date', [DataRequired()])
+    frequency = SelectField('Frequency', choices=[('Daily', 'Daily'), ('Weekly', 'Weekly'), ('Monthly', 'Monthly'), ('Yearly', 'Yearly')], validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 

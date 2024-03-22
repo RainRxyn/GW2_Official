@@ -1,6 +1,7 @@
 from datetime import datetime,timezone
 import sqlalchemy as sa
 import sqlalchemy.orm as so
+from sqlalchemy.orm import validates
 from app import db, login
 from typing import Optional
 from flask_login import UserMixin
@@ -20,6 +21,8 @@ class Expense(db.Model):
     date = so.mapped_column(sa.Date(),nullable=False, index=True)
     user_id: so.Mapped[int] = so.mapped_column(db.Integer, db.ForeignKey('user.id'))
     user: so.Mapped["User"] = so.relationship("User", back_populates='expenses')
+
+
 
     # def __init__(self, name, product, amount, category, date, user_id):
     #     self.name = name
