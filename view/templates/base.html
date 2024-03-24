@@ -7,6 +7,7 @@
     <title>EXPENSE TRACKER</title>
     {% endif %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -51,11 +52,14 @@
     </div>
 </nav>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
 <div class="container mt-4 alert-container">
-    {% with messages = get_flashed_messages() %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
-    {% for message in messages %}
-    <div class="alert {% if message.startswith('Error') %}alert-danger{% else %}alert-success{% endif %}" role="alert">
+    {% for category,message in messages %}
+    <div class="alert alert-{{ category }}">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         {{ message }}
     </div>
     {% endfor %}
@@ -69,10 +73,9 @@
     {% block reg %}{% endblock %} <!--register-->
     {% block login %}{% endblock %} <!--login-->
     {% block index %}{% endblock %} <!--index-->
-    {% block base %}
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    {% endblock %}
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+{% block base %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% endblock %}
 </div>
 </body>
 </html>

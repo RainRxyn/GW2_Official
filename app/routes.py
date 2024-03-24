@@ -1,4 +1,3 @@
-from flask import render_template, flash, redirect, request, url_for, send_from_directory, render_template_string
 from flask import render_template, flash, redirect, request, url_for,session
 from urllib.parse import urlsplit
 from app import app, db
@@ -34,7 +33,6 @@ def add_expense():
         user_id = current_user.id
 
         try:
-
             date = datetime.strptime(date,'%Y-%m-%d')
             db.session.add(Expense(name=name,
                                    product=product,
@@ -89,7 +87,12 @@ def edit_expenses(id):
                 if 'product' in request.form and request.form['product']:
                     expense.product = request.form['product']
                 if 'amount' in request.form and request.form['amount']:
-                    expense.amount = request.form['amount']
+                    amount = float(request.form['amount'])
+                    if amount >= 0:
+                        expense.amount = amount
+                    else:
+                        flash('Amount cannot be negative.', 'danger')
+                        return redirect('/show_expenses')
                 if 'category' in request.form and request.form['category']:
                     expense.category = request.form['category']
                 if 'date' in request.form and request.form['date']:
@@ -103,7 +106,7 @@ def edit_expenses(id):
                 flash(f'Failed to update expense: {str(e)}', 'danger')
 
         else:
-            flash('Expense not found.', 'danger')
+            flash('Expense not found.', 'warning')
 
     return redirect('/show_expenses')
 
@@ -211,7 +214,7 @@ def filter_expenses():
                 flash('Expense name found', 'success')
             else:
                 expenses = db.session.execute(text('SELECT * FROM expenses')).fetchall()
-                flash('Expense name not found', 'danger')
+                flash('Expense name not found', 'warning')
         else:
             expenses = db.session.execute(text('SELECT * FROM expenses'))
             flash('Please enter a name', 'danger')
@@ -240,12 +243,3 @@ def resultaten():
 
     return render_template('resultaten.html', fig=fig, fig2=fig2)
 
-@app.route('/avialable_months')
-def get_available_months():
-    if Expense.date is not None:
-        all_expenses = session.query(Expense.date).all()
-        months = set(expense.date.strftime("%B %Y") for expense in all_expenses)
-        return sorted(months)
-    else:
-        return f"No expenses found"
-    return render_template('show_expenses.html', expenses=expenses)

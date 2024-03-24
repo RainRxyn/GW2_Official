@@ -19,6 +19,15 @@
     animation-delay: 0.3s;
 }
 
+.table thead th {
+    background: #343a40;
+    color: whitesmoke;
+    padding: 8px 16px;
+}
+
+.table tbody td {
+    padding: 8px 16px;
+}
 
 
 .btn {
@@ -30,6 +39,8 @@
 .btn:hover {
    background: green;
 }
+
+
 
 
 

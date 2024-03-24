@@ -24,14 +24,6 @@ class Expense(db.Model):
 
 
 
-    # def __init__(self, name, product, amount, category, date, user_id):
-    #     self.name = name
-    #     self.product = product
-    #     self.amount = amount
-    #     self.category = category
-    #     self.date = date
-    #     self.user_id = user_id
-
     def __repr__(self):
         return f'<Expense name={self.name} product={self.product} amount={self.amount} category={self.category} date={self.date} user_id={self.user_id} >'
 

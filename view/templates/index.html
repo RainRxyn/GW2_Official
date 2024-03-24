@@ -8,12 +8,36 @@
     </div>
     <a href="/add_expense" class="btn btn-primary"> Get Started </a>
     <div class="additional-content">
-        <img src="https://source.unsplash.com/featured/?money" alt="Expense Tracker Image">
+        <img id="expenseImage" src="https://source.unsplash.com/featured/?money" alt="Expense Tracker Image">
+
         <div class="styled-text">
             <h2>Track Your Expenses with Ease</h2>
             <p>Stay organized and in control of your finances. Our expense tracker helps you monitor your spending habits, set budgets, and gain valuable insights into your financial behavior.</p>
         </div>
     </div>
+
+{#    <footer>#}
+{#    <div class="footer-container">#}
+{#        </div>#}
+{#        <div class="footer-contact">#}
+{#            <h3>Contact Us</h3>#}
+{#            <p>Email: allamiridha@yahoo.com</p>#}
+{#            <p>Phone: +32 468 33 82 72</p>#}
+{#        </div>#}
+{#    </div>#}
+{#    </footer>#}
+
+<script>
+    // Function to update the image source with a new random image from Unsplash
+    function updateImage() {
+        var randomNumber = Math.floor(Math.random() * 1000); // Generate a random number to ensure a new image each time
+        var imageUrl = "https://source.unsplash.com/featured/?" + randomNumber; // Construct the URL with a random query parameter
+        document.getElementById("expenseImage").src = imageUrl; // Set the src attribute of the image
+    }
+
+    // Call the updateImage function every second
+    setInterval(updateImage, 4000);
+</script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {

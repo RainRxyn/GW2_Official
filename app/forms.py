@@ -7,7 +7,7 @@ from datetime import datetime
 class ExpenseForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     product = StringField('Product', validators=[DataRequired()])
-    amount = FloatField('Amount', validators=[DataRequired()])
+    amount = FloatField('Amount', [DataRequired(), NumberRange(min=0, max=None, message="Amount must be a non-negative number.")])
     category = StringField('Category', validators=[DataRequired()])
     date = StringField('Date', validators=[DataRequired()])
     submit = SubmitField('Submit')

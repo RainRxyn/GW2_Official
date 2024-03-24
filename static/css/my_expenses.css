@@ -1,26 +1,25 @@
 .d-inline button[type="submit"] {
     background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+}
+
+
+
+.edit,
+.save,
+.d-inline button[type="submit"] {
     padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .d-inline button[type="submit"]:hover {
-    background-color: red;
+    background-color: green;
      transform: translateY(-3px);
 
-}
-
-.edit,
-.save {
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
 .edit {
@@ -43,8 +42,16 @@
 
 #expenses {
     width: 100%;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    background-color: grey;
+
     border-collapse: collapse;
-    animation: slideInRight 0.5s ease forwards;
+    animation: fadeInUp 0.5s ease forwards;
 }
 
 
@@ -66,63 +73,51 @@
 
 
 #expenses tr:hover {
-    background-color: lightslategray;
+    background-color: tomato;
     color: #fff;
     cursor: pointer;
-    transition: background-color 1.5s ease;
+    transition: background-color 0.5s ease;
+    border-color: tomato;
 
 }
 
 .search-bar {
     margin-bottom: 20px;
+    position: relative;
 }
 
-.search-bar input[type="text"] {
-    width: 200px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.input {
+    width: calc(20% - 60px);
+    padding: 10px 40px;
+    border-radius: 25px;
+    border: 1px solid #ced4da;
+    transition: all .2s ease-in-out;
+    outline: none;
+}
+
+.input:focus {
+    width: calc(30% - 100px);
 }
 
 .search-bar input[type="submit"] {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
+
+    height: 40px;
+    width: 60px;
     background-color: #007bff;
     color: #fff;
+    border: none;
+    border-radius: 40px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 .search-bar input[type="submit"]:hover {
-    background-color: #0056b3;
-}
-
-
-
-.search-bar {
-    margin-bottom: 20px;
-    display: flex;
-}
-
-.search-bar form {
-    display: flex;
-}
-
-.search-bar input[type="text"],
-.search-bar input[type="submit"] {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.search-bar input[type="text"] {
-    flex: 1;
-    margin-right: 5px;
+    background-color: green;
 }
 
 .dropdown {
     display: inline-block;
+    position: relative;
 }
 
 .dropdown-toggle {
@@ -137,6 +132,9 @@
 .dropdown-menu {
     display: none;
     position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border: 1px solid #ccc;
@@ -149,19 +147,19 @@
 }
 
 .dropdown-menu li a {
-
     display: block;
     padding: 5px 10px;
     text-decoration: none;
-    color: white;
+    color: whitesmoke;
     transition: background-color 0.3s ease;
     border-radius: 10px;
 }
 
 .dropdown-menu li a:hover {
-    background-color: #007bff;
-
+    background-color: #f8f9fa;
+    color: #212529;
 }
+
 
 
 
@@ -194,21 +192,42 @@
     color: #fff;
     cursor: default;
     pointer-events: none;
+
 }
 
 
-@keyframes slideInRight {
-    from {
+@keyframes fadeInUp {
+    0% {
         opacity: 0;
-        transform: translateX(100%);
+        transform: translateY(100px);
     }
-    to {
+    100% {
         opacity: 1;
-        transform: translateX(0);
+        transform: translateY(0);
     }
 }
 
+.btn-primary:hover {
+    background-color: green;
+    border-color: green;
+    color: white;
+}
 
+.data input {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    color: rgb(204, 204, 204);
+}
+
+.data input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px #007bff;
+    color: #212529;
+}
 
 
 

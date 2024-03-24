@@ -3,10 +3,11 @@
     padding: 20px;
     border-radius: 45px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(90%);
     animation: fadeIn 0.5s ease forwards;
     max-width: 500px;
     margin: 0 auto;
+    text-transform: uppercase;
 }
 
 
@@ -37,7 +38,7 @@
     border-radius: 20px;
     font-size: 16px;
     transition: all 0.3s ease-in-out;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add box shadow */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .form-group input[type="submit"] {
@@ -109,3 +110,5 @@ body {
     text-decoration: underline;
     color: orange;
 }
+
+
