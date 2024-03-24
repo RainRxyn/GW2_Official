@@ -39,7 +39,7 @@
                     <a class="nav-link" href="{{ url_for('resultaten') }}">Statistieken</a>
                 </li>
                 <li>
-                    <a class="nav-link" href="{{ url_for('logout') }}"> Log Out</a>
+                    <a class="nav-link" href="{{ url_for('logout') }}" id="logout"> Log Out</a>
                 </li>
                 {% else %}
                 <li class="nav-item">
@@ -55,7 +55,7 @@
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     {% for message in messages %}
-    <div class="alert {% if message.startswith('Error') %}alert-danger{% else %}alert-success{% endif %}" role="alert">
+    <div class="alert {% if message.startswith('Error') %}alert-danger{% else %}alert-success{% endif %}" role="alert" id="message">
         {{ message }}
     </div>
     {% endfor %}
