@@ -11,7 +11,6 @@ h1 {
 
 
 .navbar-toggler {
-    background-color: #fff;
     border: none;
     animation: fadeIn 0.5s ease forwards;
 }
@@ -29,12 +28,6 @@ h1 {
 .navbar-nav .nav-link:hover {
     color: #007bff;
 }
-
-
-.navbar-toggler-icon {
-    background-color: #fff;
-}
-
 
 .navbar-nav .nav-item.active .nav-link {
     color: #007bff;

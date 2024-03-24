@@ -163,3 +163,39 @@
         transform: translateX(0);
     }
 }
+
+.container {
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+.table {
+    opacity: 0;
+    animation: fadeInUp 0.5s ease forwards;
+    animation-delay: 0.3s;
+}
+
+.table thead th {
+    background: #343a40;
+    color: whitesmoke;
+    padding: 8px 16px;
+}
+
+.table tbody td {
+    padding: 8px 16px;
+}
+
+
+.btn {
+    opacity: 0;
+    animation: fadeInUp 0.5s ease forwards;
+    animation-delay: 0.6s;
+}
+
+.btn:hover {
+   background: green;
+}
+
+
+
+
+

@@ -13,6 +13,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
+app.config['SESSION_TYPE'] = 'filesystem'
 
 app.config['SECRET_KEY'] = 'you-will-never-guess'
 

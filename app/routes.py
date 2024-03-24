@@ -1,4 +1,5 @@
-from flask import render_template, flash, redirect, request, url_for
+from flask import render_template, flash, redirect, request, url_for, send_from_directory, render_template_string
+from flask import render_template, flash, redirect, request, url_for,session
 from urllib.parse import urlsplit
 from app import app, db
 from app.forms import ExpenseForm, LoginForm, RegisterForm, IncomeForm
@@ -23,12 +24,13 @@ def add_expense():
     form_expense = request.form
     if request.method == 'POST':
         name = form_expense['name']
+        product = form_expense['product']
         amount = form_expense['amount']
         category = form_expense['category']
         date = form_expense['date']
         user_id = current_user.id
-        try:
 
+        try:
             date = datetime.strptime(date,'%Y-%m-%d')
             db.session.add(Expense(name=name,
                                    amount=amount,
@@ -39,15 +41,14 @@ def add_expense():
             db.session.commit()
             flash('Expense added successfully!', 'success')
 
-        except Exception as e:
-            print(e)
+        except:
             db.session.rollback()
             flash('Failed to add expense. Please try again.', 'danger')
         return redirect('/add_expense')
     return render_template('add_expenses.html')
 
 
-@app.route('/show_expenses', methods=['GET', 'POST'])
+@app.route('/show_expenses' , methods=['GET','POST'])
 @login_required
 def show_expenses():
     page = request.args.get('page', 1, type=int)
@@ -81,7 +82,12 @@ def edit_expenses(id):
                 if 'name' in request.form and request.form['name']:
                     expense.name = request.form['name']
                 if 'amount' in request.form and request.form['amount']:
-                    expense.amount = request.form['amount']
+                    amount = float(request.form['amount'])
+                    if amount >= 0:
+                        expense.amount = amount
+                    else:
+                        flash('Amount cannot be negative.', 'danger')
+                        return redirect('/show_expenses')
                 if 'category' in request.form and request.form['category']:
                     expense.category = request.form['category']
                 if 'date' in request.form and request.form['date']:
@@ -95,7 +101,7 @@ def edit_expenses(id):
                 flash(f'Failed to update expense: {str(e)}', 'danger')
 
         else:
-            flash('Expense not found.', 'danger')
+            flash('Expense not found.', 'warning')
 
     return redirect('/show_expenses')
 
@@ -247,12 +253,3 @@ def resultaten():
 
     return render_template('resultaten.html', fig=fig, fig2=fig2)
 
-@app.route('/avialable_months')
-def get_available_months():
-    if Expense.date is not None:
-        all_expenses = session.query(Expense.date).all()
-        months = set(expense.date.strftime("%B %Y") for expense in all_expenses)
-        return sorted(months)
-    else:
-        return f"No expenses found"
-    return render_template('show_expenses.html', expenses=expenses)
