@@ -129,6 +129,7 @@ def add_income():
             return redirect(url_for('income'))
     return render_template('add_income.html', form=form)
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
