@@ -4,7 +4,7 @@
 
 <h1>Add Expense</h1>
 
-<form action="/add_expense" method="post" class="expense-form">
+<form action="/add_expense" method="post" class="expense-form" novalidate>
     <div class="form-group">
         <label for="category">Category</label>
         <input type="text" id="category" name="category" placeholder="Ex. Travel..." required>
@@ -22,7 +22,7 @@
         <input type="date" id="date" name="date" placeholder="YYYY-MM-DD" required>
     </div>
     <div class="form-group">
-        <input type="submit" value="Save">
+        <input type="submit" id="submit" value="Save">
     </div>
 <a href="/show_expenses" class="add-income-link">My Expenses</a>
 </form>

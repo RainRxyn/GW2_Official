@@ -45,7 +45,7 @@ def add_expense():
         except Exception as e:
             print(e)
             db.session.rollback()
-            flash('Failed to add expense. Please try again.', 'danger')
+            flash('Error: Failed to add expense. Please try again.', 'danger')
         return redirect('/add_expense')
     return render_template('add_expenses.html')
 
