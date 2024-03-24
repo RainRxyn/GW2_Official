@@ -1,5 +1,4 @@
-from flask import render_template, flash, redirect, request, url_for, send_from_directory, render_template_string
-from flask import render_template, flash, redirect, request, url_for,session
+from flask import render_template, flash, redirect, request, url_for
 from urllib.parse import urlsplit
 from app import app, db
 from app.forms import ExpenseForm, LoginForm, RegisterForm, IncomeForm
@@ -22,21 +21,19 @@ def index():
 
 
 @app.route('/add_expense', methods=['POST', 'GET'])
-@app.route('/add_expense', methods=['POST', 'GET'])
 @login_required
 def add_expense():
     form_expense = request.form
     if request.method == 'POST':
         name = form_expense['name']
-        product = form_expense['product']
         amount = form_expense['amount']
         category = form_expense['category']
         date = form_expense['date']
         user_id = current_user.id
-
         try:
+
+            date = datetime.strptime(date, '%Y-%m-%d')
             db.session.add(Expense(name=name,
-                                   product=product,
                                    amount=amount,
                                    category=category,
                                    date=date,
@@ -45,7 +42,8 @@ def add_expense():
             db.session.commit()
             flash('Expense added successfully!', 'success')
 
-        except:
+        except Exception as e:
+            print(e)
             db.session.rollback()
             flash('Failed to add expense. Please try again.', 'danger')
         return redirect('/add_expense')
@@ -85,8 +83,6 @@ def edit_expenses(id):
             try:
                 if 'name' in request.form and request.form['name']:
                     expense.name = request.form['name']
-                if 'product' in request.form and request.form['product']:
-                    expense.product = request.form['product']
                 if 'amount' in request.form and request.form['amount']:
                     expense.amount = request.form['amount']
                 if 'category' in request.form and request.form['category']:
@@ -129,6 +125,21 @@ def add_income():
             return redirect(url_for('income'))
     return render_template('add_income.html', form=form)
 
+
+@app.route('/delete_income', methods=['POST'])
+@login_required
+def delete_income():
+    if request.method == 'POST':
+        id= request.form['id']
+        income=Income.query.get(id)
+        try:
+            db.session.delete(income)
+            db.session.commit()
+            flash("Successfully deleted income")
+        except Exception as e:
+            db.session.rollback()
+            flash("Failed to delete income")
+        return redirect('/income')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
