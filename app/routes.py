@@ -24,17 +24,14 @@ def add_expense():
     form_expense = request.form
     if request.method == 'POST':
         name = form_expense['name']
-        product = form_expense['product']
         amount = form_expense['amount']
         category = form_expense['category']
         date = form_expense['date']
         user_id = current_user.id
-
         try:
 
             date = datetime.strptime(date,'%Y-%m-%d')
             db.session.add(Expense(name=name,
-                                   product=product,
                                    amount=amount,
                                    category=category,
                                    date=date,
@@ -43,7 +40,8 @@ def add_expense():
             db.session.commit()
             flash('Expense added successfully!', 'success')
 
-        except:
+        except Exception as e:
+            print(e)
             db.session.rollback()
             flash('Failed to add expense. Please try again.', 'danger')
         return redirect('/add_expense')
@@ -83,8 +81,6 @@ def edit_expenses(id):
             try:
                 if 'name' in request.form and request.form['name']:
                     expense.name = request.form['name']
-                if 'product' in request.form and request.form['product']:
-                    expense.product = request.form['product']
                 if 'amount' in request.form and request.form['amount']:
                     expense.amount = request.form['amount']
                 if 'category' in request.form and request.form['category']:

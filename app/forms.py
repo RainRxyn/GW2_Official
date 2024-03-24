@@ -6,7 +6,6 @@ from datetime import datetime
 
 class ExpenseForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
-    product = StringField('Product', validators=[DataRequired()])
     amount = FloatField('Amount', validators=[DataRequired()])
     category = StringField('Category', validators=[DataRequired()])
     date = StringField('Date', validators=[DataRequired()])

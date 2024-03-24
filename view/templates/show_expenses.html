@@ -28,7 +28,6 @@
     <thead>
         <tr>
             <th>Name</th>
-             <th>Product</th>
               <th>Amount</th>
               <th>Category</th>
              <th>Date</th>
@@ -39,7 +38,6 @@
         {% for expense in expenses %}
             <tr data-id="{{ expense.id }}">
             <td class="name data">{{ expense.name }}</td>
-            <td class="product data">{{ expense.product }}</td>
             <td class="amount data">€{{ expense.amount }}</td>
             <td class="category data">{{ expense.category }}</td>
             <td class="date data">{{ expense.date }}</td>
@@ -81,7 +79,6 @@
             var row = $(this).closest('tr');
             var id = row.attr('data-id');
             var name = row.find('.name input').val();
-            var product = row.find('.product input').val();
             var amount = row.find('.amount input').val();
             var category = row.find('.category input').val();
             var date = row.find('.date input').val();
@@ -91,7 +88,6 @@
                 method: 'POST',
                 data: {
                     name: name,
-                    product: product,
                     amount: amount,
                     category: category,
                     date: date
