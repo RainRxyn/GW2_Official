@@ -186,7 +186,7 @@ def register():
                 flash('This email is already in use')
 
         else:
-            flash('The passwords do not match')
+            flash('Error: The passwords do not match')
 
     return render_template('register.html', title='Register', form=form)
 
