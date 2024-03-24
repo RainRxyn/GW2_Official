@@ -8,9 +8,6 @@ from flask_login import login_user, logout_user, login_required, current_user
 import sqlalchemy as sa
 from sqlalchemy import text
 from datetime import datetime
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-from threading import Thread
 from app.database import get_figure, get_figure_net_income
 
 
@@ -53,7 +50,7 @@ def add_expense():
     return render_template('add_expenses.html')
 
 
-@app.route('/show_expenses' , methods=['GET','POST'])
+@app.route('/show_expenses', methods=['GET','POST'])
 @login_required
 def show_expenses():
     page = request.args.get('page', 1, type=int)
@@ -129,6 +126,21 @@ def add_income():
             flash(f"Failed to update income: {e}", 'danger')
             return redirect(url_for('income'))
     return render_template('add_income.html', form=form)
+
+@app.route('/delete_income', methods=['POST'])
+@login_required
+def delete_income():
+    if request.method == 'POST':
+        id= request.form['id']
+        income=Income.query.get(id)
+        try:
+            db.session.delete(income)
+            db.session.commit()
+            flash("Successfully deleted income")
+        except Exception as e:
+            db.session.rollback()
+            flash("Failed to delete income")
+        return redirect('/income')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

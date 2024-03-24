@@ -8,21 +8,7 @@ from model.models import Expense, Income
 mpl.use('Agg')
 
 
-# plotly bekijken ipv matplotlib (handiger voor web) --> ook dash bekijken
-def get_plot():
-    with app.app_context():
-        fig, ax = plt.subplots()
-        x_pts = db.session.execute(text('SELECT product FROM expenses')).fetchall()
-        y_pts = db.session.execute(text('SELECT amount FROM expenses')).fetchall()
-        x_pts = [x[0] for x in x_pts]
-        y_pts = [y[0] for y in y_pts]
-        ax.plot(x_pts, y_pts, label='expenses')
 
-        static_folder = app.static_folder
-        filename = os.path.join(static_folder, 'plot.png')
-        plt.savefig(filename)
-        plt.close(fig)
-        return filename
 
 
 def get_data():
@@ -44,6 +30,9 @@ def get_figure():
     with app.app_context():
 
         fig = go.Figure(data=[go.Bar(x=expense_name, y=expense_amount)])
+        fig.update_layout(title='Expenses',
+                          xaxis_title='Expense',
+                          yaxis_title='Expense Name')
 
         # Convert Plotly graph to HTML
         plot_html = fig.to_html(full_html=False)
@@ -98,3 +87,5 @@ def aggregate_income_by_month(income_date, income_amount, expense_date, expense_
         net_income_by_month[month] = income - outflow
 
     return net_income_by_month
+
+

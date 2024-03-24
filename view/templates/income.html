@@ -2,27 +2,32 @@
 
 {% block content %}
 
-<div class="container">
-    <h1 class="mb-4">Your Incomes</h1>
+    <h1>Your Incomes</h1>
 
-    <table class="table">
+    <table id="incomes">
         <thead>
             <tr>
                 <th>Name</th>
                 <th>Amount</th>
                 <th>Date</th>
                 <th>Frequency</th>
+                <th> </th>
             </tr>
         </thead>
         <tbody>
             {% for income in incomes %}
-            <tr>
-                <td>{{ income.name }}</td>
-                <td>{{ income.amount }}</td>
-                <td>{{ income.date }}</td>
-                <td>{{ income.frequency }}</td>
-                </td>
-            </tr>
+            <tr data-id="{{ income.id }}">
+                    <td class="name data">{{ income.name }}</td>
+                    <td class="amount data">{{ income.amount }}</td>
+                    <td class="date data">{{ income.date }}</td>
+                    <td class="frequency data">{{ income.frequency }}</td>
+                    <td>
+                        <form action="/delete_income" method="POST" class="d-inline">
+                            <input type="hidden" name="id" value="{{ income.id }}">
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
             {% endfor %}
     </table>
 <a href="/add_income" class="btn btn-primary"> + </a>
