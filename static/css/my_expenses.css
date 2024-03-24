@@ -1,0 +1,214 @@
+.d-inline button[type="submit"] {
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    padding: 5px 10px;
+}
+
+.d-inline button[type="submit"]:hover {
+    background-color: red;
+     transform: translateY(-3px);
+
+}
+
+.edit,
+.save {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.edit {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.save {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.edit:hover,
+.save:hover {
+    background-color: green;
+    color: white;
+     transform: translateY(-3px);
+}
+
+
+#expenses {
+    width: 100%;
+    border-collapse: collapse;
+    animation: slideInRight 0.5s ease forwards;
+}
+
+
+#expenses th {
+    background-color: #343a40;
+    color: #fff;
+}
+
+
+#expenses td {
+    padding: 8px 16px;
+    border-bottom: 1px solid #ddd;
+}
+
+
+#expenses tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+
+#expenses tr:hover {
+    background-color: lightslategray;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 1.5s ease;
+
+}
+
+.search-bar {
+    margin-bottom: 20px;
+}
+
+.search-bar input[type="text"] {
+    width: 200px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.search-bar input[type="submit"] {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-bar input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+
+
+.search-bar {
+    margin-bottom: 20px;
+    display: flex;
+}
+
+.search-bar form {
+    display: flex;
+}
+
+.search-bar input[type="text"],
+.search-bar input[type="submit"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.search-bar input[type="text"] {
+    flex: 1;
+    margin-right: 5px;
+}
+
+.dropdown {
+    display: inline-block;
+}
+
+.dropdown-toggle {
+    padding: 8px;
+    background-color: #212529;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.dropdown-menu li {
+    list-style: none;
+}
+
+.dropdown-menu li a {
+
+    display: block;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: white;
+    transition: background-color 0.3s ease;
+    border-radius: 10px;
+}
+
+.dropdown-menu li a:hover {
+    background-color: #007bff;
+
+}
+
+
+
+.pagination-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.pagination-container a,
+.pagination-container span {
+    display: inline-block;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    transition: background-color 0.3s ease;
+    margin: 0 5px;
+}
+
+.pagination-container a:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.pagination-container .active {
+    background-color: #007bff;
+    color: #fff;
+    cursor: default;
+    pointer-events: none;
+}
+
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+
+
+

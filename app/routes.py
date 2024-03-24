@@ -1,12 +1,17 @@
-from flask import render_template, flash, redirect, request, url_for
+from flask import render_template, flash, redirect, request, url_for, send_from_directory, render_template_string
+from flask import render_template, flash, redirect, request, url_for,session
 from urllib.parse import urlsplit
 from app import app, db
-from app.forms import ExpenseForm, LoginForm, RegisterForm
+from app.forms import ExpenseForm, LoginForm, RegisterForm, IncomeForm
 from model.models import Expense, Income, User
 from flask_login import login_user, logout_user, login_required, current_user
 import sqlalchemy as sa
 from sqlalchemy import text
 from datetime import datetime
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+from threading import Thread
+from app.database import get_figure, get_figure_net_income
 
 
 @app.route('/')
@@ -50,7 +55,8 @@ def add_expense():
 @app.route('/show_expenses', methods=['GET', 'POST'])
 @login_required
 def show_expenses():
-    expenses = db.session.execute(text('SELECT * FROM expenses')).fetchall()
+    page = request.args.get('page', 1, type=int)
+    expenses = Expense.query.paginate(page=page, per_page=app.config['EXPENSES_PER_PAGE'], error_out=False)
     return render_template('show_expenses.html', expenses=expenses)
 
 
@@ -91,9 +97,9 @@ def edit_expenses(id):
 
                 db.session.commit()
                 flash('Expense updated successfully!', 'success')
-            except:
+            except (ValueError,KeyError,Exception) as e:
                 db.session.rollback()
-                flash('Failed to update expense. Please try again.', 'danger')
+                flash(f'Failed to update expense: {str(e)}', 'danger')
 
         else:
             flash('Expense not found.', 'danger')
@@ -101,30 +107,27 @@ def edit_expenses(id):
     return redirect('/show_expenses')
 
 
-@app.route('/add_income', methods=["POST", "GET"])
+@app.route('/add_income', methods=["GET", "POST"])
 @login_required
 def add_income():
-    if request.method == 'POST':
-        form_income = request.form
-        name = form_income['name']
-        amount = form_income['amount']
-        frequency = form_income['frequency']
+    form = IncomeForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        amount = form.amount.data
+        date = form.date.data
+        frequency = form.frequency.data
         user_id = current_user.id
 
         try:
-            db.session.add(Income(name=name,
-                                  amount=amount,
-                                  frequency=frequency,
-                                  user_id= user_id))
+            db.session.add(Income(name=name, amount=amount, date=date, frequency=frequency, user_id=user_id))
             db.session.commit()
-            flash("Income has succesfully been added")
-
+            flash("Income has been successfully added", 'succes')
+            return redirect(url_for('income'))
         except Exception as e:
             db.session.rollback()
-            flash(f"Failed to update income, {e}")
-        return redirect('/add_income')
-    return render_template('add_income.html')
-
+            flash(f"Failed to update income: {e}", 'danger')
+            return redirect(url_for('income'))
+    return render_template('add_income.html', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -200,7 +203,7 @@ def income():
 def filter_expenses():
     if request.method == 'POST':
         form = request.form
-        name = form.get('name', None)
+        name = form.get('name')
         if name:
             expenses =  db.session.execute(text('SELECT * FROM expenses WHERE name LIKE :search_name'),{'search_name': f'{name}%'}).fetchall()
             if expenses:
@@ -219,12 +222,29 @@ def filter_expenses():
         expenses = db.session.execute(text('SELECT * FROM expenses ORDER BY date ASC'))
     if request.args.get('date') == 'date_desc':
         expenses = db.session.execute(text('SELECT * FROM expenses ORDER BY date DESC'))
+    if request.args.get('amount') == 'amount_asc':
+        expenses = db.session.execute(text('SELECT * FROM expenses ORDER BY amount ASC'))
+    if request.args.get('amount') == 'amount_desc':
+        expenses = db.session.execute(text('SELECT * FROM expenses ORDER BY amount DESC'))
 
     return render_template('show_expenses.html', expenses=expenses)
 
 
 
 
+@app.route('/resultaten')
+def resultaten():
+    fig = get_figure()
+    fig2 = get_figure_net_income()
 
+    return render_template('resultaten.html', fig=fig, fig2=fig2)
 
-
+@app.route('/avialable_months')
+def get_available_months():
+    if Expense.date is not None:
+        all_expenses = session.query(Expense.date).all()
+        months = set(expense.date.strftime("%B %Y") for expense in all_expenses)
+        return sorted(months)
+    else:
+        return f"No expenses found"
+    return render_template('show_expenses.html', expenses=expenses)

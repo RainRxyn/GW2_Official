@@ -1,10 +1,13 @@
 from datetime import datetime, timezone
 import sqlalchemy as sa
 import sqlalchemy.orm as so
+from sqlalchemy.orm import validates
 from app import db, login
 from typing import Optional
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+
+
 
 
 # create expense model
@@ -18,6 +21,8 @@ class Expense(db.Model):
     date = so.mapped_column(sa.Date(),nullable=False, index=True)
     user_id: so.Mapped[int] = so.mapped_column(db.Integer, db.ForeignKey('user.id'))
     user: so.Mapped["User"] = so.relationship("User", back_populates='expenses')
+
+
 
     # def __init__(self, name, product, amount, category, date, user_id):
     #     self.name = name
@@ -61,6 +66,7 @@ class Income(db.Model):
     id: so.Mapped[int] = so.mapped_column(sa.Integer, primary_key=True)
     name: so.Mapped[str] = so.mapped_column(sa.String(80), nullable=False, index=True)
     amount: so.Mapped[int] = so.mapped_column(sa.Float, nullable=False)
+    date = so.mapped_column(sa.Date(),nullable=False, index=True)
     frequency: so.Mapped[int] = so.mapped_column(sa.String(20), nullable=False)
     user_id: so.Mapped[int] = so.mapped_column(db.Integer, db.ForeignKey('user.id'))
     user: so.Mapped["User"] = so.relationship("User", back_populates='incomes')
