@@ -6,6 +6,7 @@ Flask-SQLalchemy
 flask-wtf
 flask_migrate
 flask-login
+selenium
 numpy
 matplotlib
 plotly
