@@ -31,15 +31,19 @@ def add_expense():
         date = form_expense['date']
         user_id = current_user.id
         try:
-            date = datetime.strptime(date,'%Y-%m-%d')
-            db.session.add(Expense(name=name,
-                                   amount=amount,
-                                   category=category,
-                                   date=date,
-                                   user_id=user_id))
+            amount = float(amount)
+            if amount < 0:
+                raise ValueError("Amount cannot be negative")
+            else:
+                date = datetime.strptime(date,'%Y-%m-%d')
+                db.session.add(Expense(name=name,
+                                       amount=amount,
+                                       category=category,
+                                       date=date,
+                                       user_id=user_id))
 
-            db.session.commit()
-            flash('Expense added successfully!', 'success')
+                db.session.commit()
+                flash('Expense added successfully!', 'success')
 
         except Exception as e:
             print(e)

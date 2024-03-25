@@ -9,7 +9,7 @@ services:
       - db
       - pg-admin
     environment:
-      - DATABASE_URL=postgresql://postgres:rain1234@172.23.0.3:5432/expenses
+      - DATABASE_URL=postgresql://postgres:rain1234@172.23.0.2:5432/expenses
 
   db:
     image: postgres
