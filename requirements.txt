@@ -13,3 +13,4 @@ plotly
 dash
 pandas
 selenium
+email-validator

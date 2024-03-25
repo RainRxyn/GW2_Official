@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  web:
+    image: expenses:latest  # Replace 'your-flask-app-image' with your actual image name
+    ports:
+      - "8000:5000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@localhost:5432/expenses
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: expenses
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
