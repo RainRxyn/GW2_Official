@@ -2,7 +2,7 @@ version: '3'
 
 services:
   web:
-    image: expenses:latest  # Replace 'your-flask-app-image' with your actual image name
+    image: rainroosen/expenses:latest  # Replace 'your-flask-app-image' with your actual image name
     ports:
       - "8000:5000"
     depends_on:
